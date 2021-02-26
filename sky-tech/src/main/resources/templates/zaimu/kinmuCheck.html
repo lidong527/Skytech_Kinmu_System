@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"  />
+    <link href="../../static/css/kinmu.css" rel="stylesheet" type="text/css"  th:href="@{/css/kinmu.css}"/>
+    <title>業務報告書チェック</title>
+    <script type="text/javascript">
+        /*<![CDATA[*/
+        function current() {
+            var d = new Date(),
+            str = '';
+            str += d.getFullYear() + '年'; //当前年份
+            str += d.getMonth() + 1 + '月' + '作業報告書'; //当前月份（0——11）
+            return str;
+        }
+
+        window.onload = function () {
+
+            var timer = document.getElementById("timer");
+            timer.innerHTML = current();
+            var alertStr = document.getElementById("msg").value;
+            if(alertStr == "承認成功"){
+                alert(alertStr);
+                window.close();
+            }
+        }
+
+        /*]]>*/
+
+    </script>
+    <style type="text/css">
+        #grad {
+            height: 100px;
+            background-color: blue;
+            background-image: linear-gradient(to bottom, #87CEFA , white);
+        }
+        .year{
+            height: 60px;
+            font-size: 30px;
+            text-align:center;
+            background-color: #87CEFA;
+            -webkit-text-stroke: 1px white;
+            -webkit-text-fill-color: transparent;
+        }
+        .disableButton{
+
+            opacity:0.5;
+
+        pointer-events:none;
+
+        }
+
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-default top-navbar" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <p class="navbar-brand"><strong>メニュー</strong></p>
+        <div id="sideNav" href="">
+            <i class="fa fa-bars icon"></i>
+        </div>
+    </div>
+</nav>
+<!--/. NAV TOP  -->
+<nav class="navbar-default navbar-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav" id="main-menu">
+            <li>
+                <a href="/koutuQueryList"><i class="fa fa-sitemap"></i> 社員交通費チェック</a>
+            </li>
+            <li>
+                <a href="/kinmuQueryList"><i class="fa fa-sitemap"></i> 社員勤務表チェック</a>
+            </li>
+            <li>
+                <a href="/tateQueryList"><i class="fa fa-sitemap"></i> 社員立替金チェック</a>
+            </li>
+            <li>
+                <a href="/addStaff"><i class="fa fa-sitemap"></i> 社員入職処理</a>
+            </li>
+            <li>
+                <a href="empty.html"><i class="fa fa-sitemap"></i> 社員退職処理</a>
+            </li>
+            <li>
+                <a href="/queryAllListBy"><i class="fa fa-sitemap"></i> 社員基本情報照会</a>
+            </li>
+            <li>
+                <a href="/listAll"><i class="fa fa-sitemap"></i> 人事確認画面</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="year" align="center">
+    <h3 background-color="#87CEFA" id="timer">業務報告書</h3><br />
+</div>
+<div align="center" id="grad" style="height: 350px ">
+    <table>
+        <th>
+            下記の期間の業務状況について、御報告いたします。
+        </th>
+    </table>
+    <form name="update" th:object="${kinmu}" method="post" enctype="multipart/form-data">
+        <table cellspacing="0" width="30%" style="border-collapse:separate; border-spacing:0px 10px;">
+            <tr >
+                <input  type="hidden" th:name="USED_TIME" th:value="*{USED_TIME}" >
+                <input  type="hidden" th:name="upTime" th:value="*{upTime}" >
+                <input type="hidden" id="msg" th:value="${msg}">
+                <td class="td" >会社名</td>
+                <td colspan="3"><input type="text" th:value="*{company}" class="text-time" th:name="company" id="company" required="required" readonly/></td>
+            </tr>
+            <tr>
+                <td class="td" >社員番号</td>
+                <td colspan="3"><input type="text" th:value="*{staffBg}" class="text-time" th:name="staffBg" required="required" readonly/></td>
+            </tr>
+            <tr>
+                <td class="td" >作業者名</td>
+                <td colspan="3"><input type="text" th:value="*{staffName}" class="text-time" th:name="staffName" required="required" readonly/></td>
+            </tr>
+
+            <tr>
+                <td class="td">基準期間</td>
+                <td colspan="3"><input type="text" th:value="*{standardtime}" style="width: 30%" th:name="standardtime" required="required" />
+                    ~
+                    <input type="text" th:value="*{upperTime}" style="width: 30%" th:name="upperTime" required="required" />
+                </td>
+            </tr>
+            <tr>
+                <td class="td">稼働時間</td>
+                <td colspan="3"><input type="text"  th:value="*{workTime}" class="text-time" th:name="workTime" required="required" readonly/>
+                </td>
+            </tr>
+            </tr>
+        </table>
+        <br/>
+        <div align="center">
+            <button class="button button2" th:class="*{buttonClass}" type="submit" onclick="javascript:this.form.action='/KinmuOk'">承認する</button>
+<!--            <button class="button button5" type="reset" >取消</button>-->
+            <button class="button button2" onclick="javascript:window.close()">戻る</button>
+        </div>
+    </form>
+</div>
+<div>
+    <form enctype="multipart/form-data" action="/download" method="post" align="center">
+        <input type="hidden" th:value="${downType}" name="downType"     />
+        <input type="hidden" th:value="${downTime}" name="downTime" />
+        <input type="hidden" th:value="${staffBg}" name="staffBg" />
+        <button id="download" type="submit" name="fileDownload" onclick="usedTime()" class="buttondownload" >勤務表ファイルをダウンロードする</button>
+    </form>
+</div>
+</body>
+</html>

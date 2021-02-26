@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta content="" name="description" />
+    <meta content="webthemez" name="author" />
+    <title>社員情報一覧画面</title>
+    <link href="../static/css/bootstrap.css" rel="stylesheet" />
+    <!-- FontAwesome Styles-->
+    <link href="../static/css/font-awesome.css" rel="stylesheet" />
+    <!-- Custom Styles-->
+    <link href="../static/css/custom-styles.css" rel="stylesheet" />
+    <!-- Google Fonts-->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <style type="text/css">
+        #grad {
+            height: 100%;
+            width: 100%;
+            background-color: blue;
+            background-image: linear-gradient(to bottom, #87CEFA , white);
+        }
+        .year{
+            height: 60px;
+            font-size: 30px;
+            text-align:center;
+            background-color: #87CEFA;
+            -webkit-text-stroke: 1px white;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-default top-navbar" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <p class="navbar-brand" ><strong>メニュー</strong></p>
+        <div id="sideNav" href="">
+            <i class="fa fa-bars icon"></i>
+        </div>
+    </div>
+</nav>
+<!--/. NAV TOP  -->
+<nav class="navbar-default navbar-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav" id="main-menu">
+            <li>
+                <a href="/koutuQueryList"><i class="fa fa-sitemap"></i> 社員交通費チェック</a>
+            </li>
+            <li>
+                <a href="/kinmuQueryList"><i class="fa fa-sitemap"></i> 社員勤務表チェック</a>
+            </li>
+            <li>
+                <a href="/tateQueryList"><i class="fa fa-sitemap"></i> 社員立替金チェック</a>
+            </li>
+            <li>
+                <a href="empty.html"><i class="fa fa-sitemap"></i> 社員入職処理</a>
+            </li>
+            <li>
+                <a href="empty.html"><i class="fa fa-sitemap"></i> 社員退職処理</a>
+            </li>
+            <li>
+                <a href="/queryAllListBy"><i class="fa fa-sitemap"></i> 社員基本情報照会</a>
+            </li>
+            <li>
+                <a href="/listAll"><i class="fa fa-sitemap"></i> 人事確認画面</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div id="page-wrapper">
+    <div class="year">&nbsp;
+        <h2 style="text-align: center"> 社員情報一覧</h2><br />
+    </div>
+    <div id="grad"><br />
+<label th:value="*{msg}"></label>
+<form method="post" th:object="${search}" action="/allStatus/search">
+        <table width="100%" >
+            <tr>
+                <td>
+                    <label>社員番号</label>
+                </td>
+                <td>
+                    <input type="text" th:field="*{staffId}">
+                </td>
+                <td>
+                    <label>名前</label>
+                </td>
+                <td>
+                    <input type="text" th:field="*{staffName}">
+                </td>
+                <td>
+                    <label>勤務表状態</label>
+                </td>
+                <td>
+                    <select name="workTable" th:field="*{statusWorkTable}">
+                        <option value="0">-</option>
+                        <option value="1">未提出</option>
+                        <option value="2">提出済</option>
+                        <option value="3">承認済</option>
+                    </select>
+                </td>
+                <td>
+                    <label>交通費状態</label>
+                </td>
+                <td>
+                    <select name="workTable" th:field="*{statusTransExpense}">
+                        <option value="0">なし</option>
+                        <option value="1">未提出</option>
+                        <option value="2">提出済</option>
+                        <option value="3">承認済</option>
+                    </select>
+                </td>
+                <td>
+                    <label>立替金明細</label>
+                </td>
+                <td>
+                    <select name="workTable" th:field="*{statusPayment}">
+                        <option value="0">なし</option>
+                        <option value="1">未提出</option>
+                        <option value="2">提出済</option>
+                        <option value="3">承認済</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+
+                <td>
+                    <input type="submit" value="検索">
+                </td>
+            </tr>
+        </table>
+
+</form>
+<form method="get">
+    <div class="main">
+        <table border="2px">
+            <tr>
+                <th rowspan="2">社員番号</th>
+                <th rowspan="2">名前</th>
+                <th rowspan="2">業務タイプ</th>
+                <th rowspan="2">現在状態</th>
+                <th colspan="3">当月</th>
+            </tr>
+            <tr>
+                <th>勤務表</th>
+                <th>交通費</th>
+                <th>立替金明細書</th>
+            </tr>
+            <tr th:each="staff : ${result}">
+                <td>
+                    <input type="text" th:value="*{staff.staffId}">
+                </td>
+                <td>
+                    <input type="text" th:value="*{staff.staffName}">
+                </td>
+                <td>
+                    <input type="text" th:value="*{staff.workType}">
+                </td>
+                <td>
+                    <input type="text" th:value="*{staff.currentType}">
+                </td>
+                <td>
+                    <input type="text" th:value="*{staff.workTableCurrentMonth}">
+                </td>
+                <td>
+                    <input type="text" th:value="*{staff.transExpenseCurrentMonth}">
+                </td>
+                <td>
+                    <input type="text" th:value="*{staff.paymentCurrentMonth}">
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</form>
+    </div>
+</div>
+</div>
+</body>
+</html>

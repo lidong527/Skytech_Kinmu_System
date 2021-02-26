@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<script th:inline="javascript">
+    $(function () {
+        //菜单初始
+        $('.sidebar-menu').tree();
+        var current = [[${currentMenu}]];
+
+        //菜单激活
+        var cuLi = $(".treeview-menu li[name='[[${currentMenu}]]']");
+        cuLi.addClass("active");
+        cuLi.closest(".treeview").addClass("active")
+    })
+</script>
+<aside class="main-sidebar" th:fragment="menuInfo">
+    <section class="sidebar">
+        <!-- search form -->
+      <!--  <form action="#" method="get" class="sidebar-form">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Search...">
+                <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+        </form>-->
+
+        <div align="center" style="margin-top: -20px;margin-bottom: 10px">
+<!--            <form method="get">-->
+<!--                <button class="btn btn-danger" type ="button" href="/logout">ログアウト</button>-->
+<!--            </form>-->
+            <a style="background-color: #F03E41; display:block; text-align:center; line-height:35px;
+            border: 0px solid;border-radius: 5px; width: 100px; height: 35px; color:white;"
+               href="/logout"> ログアウト </a>
+        </div>
+        <ul class="sidebar-menu" data-widget="tree">
+
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-dashboard"></i> <span>系统管理</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li name="department"><a href="/"><i class="fa fa-circle-o"></i> 部门管理</a></li>
+                    <li name="employee"><a href="/"><i class="fa fa-circle-o"></i> 员工管理</a></li>
+                    <li name="permission"><a href="/"><i class="fa fa-circle-o"></i> 权限管理</a></li>
+                    <li name="role"><a href="/"><i class="fa fa-circle-o"></i> 角色管理</a></li>
+                </ul>
+            </li>
+
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-edit"></i>
+                    <span>社员管理</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+
+                    <li name="customerTraceHistory"><a href="/addStaff"><i
+                            class="fa fa-circle-o"></i> 入職処理</a></li>
+                    <li name="customerTransfer"><a href="/retirement"><i class="fa fa-circle-o"></i> 退職処理</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-laptop"></i>
+                    <span>社员信息</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li name="staffContractList-A"><a href="/listContract?CONTRACT_TYPE=0"><i class="fa fa-circle-o"></i>個人事業主</a>
+                    </li>
+                    <li name="staffContractList-B"><a href="/listContract?CONTRACT_TYPE=1"><i class="fa fa-circle-o"></i>契约社员</a>
+                    </li>
+                    <li name="staffContractList-C"><a href="/listContract?CONTRACT_TYPE=2"><i class="fa fa-circle-o"></i>正社员</a>
+                    </li>
+
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-files-o"></i>
+                    <span>詳細状況照会</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li name="detailCount-JAVA"><a href="/queryByType?IT_TYPE=JAVA"><i class="fa fa-circle-o"></i> オープン系</a>
+                    </li>
+                    <li name="detailCount-SAP"><a href="/queryByType?IT_TYPE=SAP"><i
+                            class="fa fa-circle-o"></i> SAP</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-check-square"></i>
+                    <span>社員提出情報照会</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li name="adminAllList"><a href="/queryAllListBy"><i class="fa fa-circle-o"></i>業務状況一覧</a>
+                    </li>
+                    <li name="allStatus"><a href="/listAll"><i class="fa fa-circle-o"></i>提出状態確認</a>
+                    </li>
+                </ul>
+            </li>
+
+
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-pie-chart"></i>
+                    <span>社員費用チェック</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li name="adminKoutuList"><a href="/koutuQueryList"><i class="fa fa-circle-o"></i> 交通費チェック</a></li>
+
+                    <li name="adminKinmuList"><a href="/kinmuQueryList"><i class="fa fa-circle-o"></i> 勤務表チェック</a></li>
+                    <li name="adminTateList"><a href="/tateQueryList"><i class="fa fa-circle-o"></i> 立替金チェック</a>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+    </section>
+</aside>
+
+
+</html>

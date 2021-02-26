@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta content="" name="description"/>
+    <meta content="webthemez" name="author" />
+    <!-- Bootstrap Styles-->
+    <link href="/css/bootstrap.css" rel="stylesheet" />
+    <!-- FontAwesome Styles-->
+    <link href="/css/font-awesome.css" rel="stylesheet" />
+    <!-- Custom Styles-->
+    <link href="/css/custom-styles.css" rel="stylesheet" />
+    <title>立替金チェック画面</title>
+    <style type="text/css">
+        #grad {
+            height: 100px;
+            background-color: blue;
+            background-image: linear-gradient(to bottom, #87CEFA , white);
+        }
+        .year{
+            font-size: 30px;
+            text-align:center;
+            height: 60px;
+            background-color: #87CEFA;
+            -webkit-text-stroke: 1px white;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+    <script type="text/javascript">
+        window.onload = function () {
+
+            var alertStr = document.getElementById("msg").value;
+            if(alertStr == "承認成功"){
+                alert(alertStr);
+                window.close();
+            }
+        }
+    </script>
+</head>
+<body>
+
+<nav class="navbar navbar-default top-navbar" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <p class="navbar-brand"><strong>メニュー</strong></p>
+        <div id="sideNav" href="">
+            <i class="fa fa-bars icon"></i>
+        </div>
+    </div>
+</nav>
+<!--/. NAV TOP  -->
+<nav class="navbar-default navbar-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav" id="main-menu">
+            <li>
+                <a href="/koutuQueryList"><i class="fa fa-sitemap"></i> 社員交通費チェック</a>
+            </li>
+            <li>
+                <a href="/kinmuQueryList"><i class="fa fa-sitemap"></i> 社員勤務表チェック</a>
+            </li>
+            <li>
+                <a href="/tateQueryList"><i class="fa fa-sitemap"></i> 社員立替金チェック</a>
+            </li>
+            <li>
+                <a href="empty.html"><i class="fa fa-sitemap"></i> 社員入職処理</a>
+            </li>
+            <li>
+                <a href="empty.html"><i class="fa fa-sitemap"></i> 社員退職処理</a>
+            </li>
+            <li>
+                <a href="/queryAllListBy"><i class="fa fa-sitemap"></i> 社員基本情報照会</a>
+            </li>
+            <li>
+                <a href="/listAll"><i class="fa fa-sitemap"></i> 人事確認画面</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<!-- /. NAV SIDE  -->
+<div id="page-wrapper">
+    <div class="year" align="center"></br>
+    <h2 background-color="#87CEFA" id="timer">立替金確認</h2><br />
+</div>
+<div align="center" id="grad" style="height: 300px;">
+</br>
+    <table>
+        <h5>
+            下記の期間の立替金状況について、御報告いたします。
+        </h5>
+    </table>
+        <form action="/tatekaeInsert" method="post"  th:object="${tatekae}" enctype="multipart/form-data">
+           <table style="border-collapse:separate; border-spacing:0px 10px;">
+               <tr>
+                   <td>作業現場名前</td>
+                   <td><input type="text" name="SUB_COMPANY"  th:value="*{SUB_COMPANY}"></td>
+               </tr>
+               <tr>
+                   <td>作業者名</td>
+                   <td><input type="text" name="STAFF_NAME"  id="" th:value="*{STAFF_NAME}" readonly></td>
+               </tr>
+               <tr>
+                   <td>金額</td>
+                   <td><input type="text" name="USED_PRICE" th:value="*{USED_PRICE}" ></td>
+               </tr>
+               <tr>
+                   <td align="left" name="upfile">文件下载</td>
+                   <td align="left">
+                       <a href="/download">download</a>
+                       <a href="/立替金.xlsx" class="btn btn-success">
+                           <span class="glyphicon glyphicon-download-alt"></span> 下载模板
+                       </a>
+                   </td>
+               </tr>
+               <tr>
+                   <td></td>
+                   <td>
+                       <input type="hidden" th:value="*{STAFF_BG}" name="STAFF_BG">
+                       <input type="hidden" id="msg" th:value="${msg}">
+                       <button class="ButtonClose" type="submit" th:class="*{buttonClass}" onclick="javascript:this.form.action='/tatekaeOK'">承認する</button>
+                       <button class="ButtonClose" onclick="javascript:window.close()">×閉じる</button>
+               </tr>
+           </table>
+        </form>
+    </div>
+    <div>
+        <form enctype="multipart/form-data" action="/download" method="post" align="center">
+            <input type="hidden" th:value="${downType}" name="downType" />
+            <input type="hidden" th:value="${downTime}" name="downTime" />
+            <input type="hidden" th:value="${staffBg}" name="staffBg" />
+            <button id="download" type="submit" name="fileDownload" onclick="usedTime()" class="buttondownload" align="center">立替金ファイルをダウンロードする</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

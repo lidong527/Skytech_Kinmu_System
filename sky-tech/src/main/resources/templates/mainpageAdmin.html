@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta content="" name="description" />
+    <meta content="webthemez" name="author" />
+    <title>ホームページ</title>
+    <link href="/css/bootstrap.css" rel="stylesheet" />
+    <!-- FontAwesome Styles-->
+    <link href="/css/font-awesome.css" rel="stylesheet" />
+    <!-- Custom Styles-->
+    <link href="/css/custom-styles.css" rel="stylesheet" />
+    <!-- Google Fonts-->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+
+    <script type="text/javascript" th:src="@{/js/datetime.js}" ></script>
+    <script type="text/javascript">
+        //今日の日期を取得する
+        function MonthFirst(){
+            var time=new Date();
+            var year=time.getFullYear();
+            var month=time.getMonth()+1;
+            var day=time.getDate();
+            if(month<10){
+                month="0"+month;
+            }
+            var v=year+'年'+month+'月'+ day+'日';
+            return v ;
+        }
+
+        window.onload = function () {
+            var timer = document.getElementById("timer");
+            timer.innerHTML = MonthFirst();
+        }
+
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-default top-navbar" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html"><strong>メニュー</strong></a>
+            <div id="sideNav" href="">
+                <i class="fa fa-bars icon"></i>
+            </div>
+        </div>
+    </nav>
+    <!--/. NAV TOP  -->
+    <nav class="navbar-default navbar-side" role="navigation">
+        <div class="sidebar-collapse">
+            <li>
+                <a href="/koutuQueryList"><i class="fa fa-sitemap"></i> 社員交通費チェック</a>
+            </li>
+            <li>
+                <a href="/kinmuQueryList"><i class="fa fa-sitemap"></i> 社員勤務表チェック</a>
+            </li>
+            <li>
+                <a href="/tateQueryList"><i class="fa fa-sitemap"></i> 社員立替金チェック</a>
+            </li>
+            <li>
+                <a href="empty.html"><i class="fa fa-sitemap"></i> 社員入職処理</a>
+            </li>
+            <li>
+                <a href="empty.html"><i class="fa fa-sitemap"></i> 社員退職処理</a>
+            </li>
+            <li>
+                <a href="/queryAllListBy"><i class="fa fa-sitemap"></i> 社員基本情報照会</a>
+            </li>
+        </div>
+    </nav>
+    <!--/. NAV TOP  -->
+    <div id="page-wrapper" >
+        <div class="header">
+            <h1 class="page-header">
+                ホームページ <small>こんにちは</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">個人情報</a></li>
+                <li class="active" id="timer">Data</li>
+            </ol>
+        </div>
+        <!-- /. PAGE INNER  -->
+    </div>
+    <!-- /. PAGE WRAPPER  -->
+<!-- /. WRAPPER  -->
+<!-- JS Scripts-->
+<!-- jQuery Js -->
+<script src="/js/jquery-1.10.2.js"></script>
+<!-- Bootstrap Js -->
+<script src="/js/bootstrap.min.js"></script>
+<!-- Metis Menu Js -->
+<script src="/js/jquery.metisMenu.js"></script>
+<!-- Custom Js -->
+<script src="/js/custom-scripts.js"></script>
+
+</body>
+</html>

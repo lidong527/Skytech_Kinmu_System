@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>成員確認画面(財務)</title>
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.css" th:href="@{/css/font-awesome.css}"/>
+
+    <!--    <link rel="stylesheet" href="css/base.css">-->
+    <!--    <link rel="stylesheet" href="css/staffStatus.css">-->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <!--    <script src="js/staffStatus.js"></script>-->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="/jquery/jquery.twbsPagination.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.twbsPagination.min.js"
+            th:src="@{/js/jquery.twbsPagination.min.js}"></script>
+
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script th:inline="javascript">
+        function getQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]);
+            return null;
+        }
+
+        function getVariety(val) {
+            console.log(val);
+            if (val == 0) {
+                $(".current-month").css('display', 'none');
+                $(".last-month").removeAttr("style");
+            } else {
+                $(".last-month").css('display', 'none');
+                $(".current-month").removeAttr("style");
+            }
+        }
+
+
+        $(function () {
+            var month = [[${qo.month}]];
+            getVariety(month);
+
+            $("#btn_query").click(function () {
+
+                month = document.getElementById("month").value;
+                if (month == 0) {
+                    $("#tmStatusKou").val("");
+                    $("#tmStatusKin").val("");
+                    $("#tmStatusTat").val("");
+                } else {
+                    $("#lmStatusKou").val("");
+                    $("#lmStatusKin").val("");
+                    $("#lmStatusTat").val("");
+                }
+
+                $("#currentPage").val(1);
+                $("#searchForm").submit();
+            });
+
+            var p = [[${qo.totalPage}]];
+            var pageNum = [[${qo.currentPage}]];
+
+
+            $("#pagination").twbsPagination({
+
+
+                totalPages: p || 1,
+                startPage: pageNum || 1,
+                visiblePages: 5,
+                first: "首页",
+                prev: "上页",
+                next: "下页",
+                last: "尾页",
+                initiateStartPageClick: false,
+                onPageClick: function (event, page) {
+                    $("#currentPage").val(page);
+                    $("#searchForm").submit();
+                }
+            });
+        })
+    </script>
+
+    <style>
+        .main-wrap {
+            width: 1200px;
+            margin: 0 auto;
+        }
+
+        .content-h {
+            width: 100%;
+            text-align: center;
+        }
+
+        .content-h .select {
+            height: 50px;
+        }
+
+        .content-h ul li {
+            float: left;
+            list-style-type: none;
+            margin-left: 15px;
+        }
+
+        .content-c ul li {
+            float: right;
+            list-style-type: none;
+        }
+
+        .content-c {
+            width: 100%;
+        }
+
+        .c-kesaku {
+            width: 100%;
+            height: 50px;
+        }
+
+        .c-kesaku ul {
+            float: right;
+        }
+
+
+        .content-c img {
+            width: 25px;
+            margin: 0 5px;
+        }
+
+        table {
+            width: 100%;
+            height: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        table th, td {
+            border: 1px solid black;
+            height: 30px;
+            line-height: 30px;
+        }
+
+        table th {
+            background-color: rgb(124, 121, 121);
+            color: rgb(240, 235, 235);
+        }
+
+        .content-f {
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            margin-top: 30px;
+        }
+
+        .content-f ul {
+            width: 300px;
+            height: 50px;
+            margin: 0 auto;
+        }
+
+        .content-f ul li {
+            list-style-type: none;
+            float: left;
+            margin-left: 20px;
+        }
+
+
+        .uncommit{
+            color: #FF0000;
+            font-weight: bold;
+        }
+        .commit{
+            cursor:pointer;
+            background-color: white;
+            color: #337ab7;
+            border: 2px solid #FFFFFF;
+        }
+
+        .syoninsumi {
+            color: #32CD32;
+        }
+
+        .teisyutsusumi {
+            color: #0000FF;
+        }
+
+        .miteisyutsu {
+            color: #FF0000;
+        }
+
+        .zanngyoujikann {
+            color: #FF0000;
+        }
+
+        .zanngyoujikann-a {
+            color: #FF0000;
+            font-weight: bold;
+            font-size: larger;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-default top-navbar" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><strong>メニュー</strong></a>
+        <div id="sideNav" href="">
+            <i class="fa fa-bars icon"></i>
+        </div>
+    </div>
+</nav>
+<!--/. NAV TOP  -->
+<nav class="navbar-default navbar-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav" id="main-menu">
+            <li>
+                <a href="/koutuQueryList"><i class="fa fa-sitemap"></i> 社員交通費チェック</a>
+            </li>
+            <li>
+                <a href="/kinmuQueryList"><i class="fa fa-sitemap"></i> 社員勤務表チェック</a>
+            </li>
+            <li>
+                <a href="/tateQueryList"><i class="fa fa-sitemap"></i> 社員立替金チェック</a>
+            </li>
+            <li>
+                <a href="/addStaff"><i class="fa fa-sitemap"></i> 社員入職処理</a>
+            </li>
+            <li>
+                <a href="empty.html"><i class="fa fa-sitemap"></i> 社員退職処理</a>
+            </li>
+            <li>
+                <a href="/queryAllListBy"><i class="fa fa-sitemap"></i> 社員基本情報照会</a>
+            </li>
+            <li>
+                <a href="/listAll"><i class="fa fa-sitemap"></i> 人事確認画面</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="main-wrap">
+    <!--        <div th:replace="../templates/common/navbar :: main"></div>-->
+    <div class="content-h">
+        <div>
+            <h1>社員の提出状態確認</h1>
+        </div>
+        <form class="form-inline" id="searchForm" action="/staffSearch" method="post">
+            <input type="hidden" name="currentPage" id="currentPage">
+            <!--                <input type="hidden" name="LM_KINMU_STATUS" id="LM_KINMU_STATUS" th:value="${qo.LM_KINMU_STATUS}">-->
+            <!--                <input type="hidden" name="LM_KOUTU_STATUS" id="LM_KOUTU_STATUS" th:value="${qo.LM_KINMU_STATUS}">-->
+            <!--                <input type="hidden" name="LM_TATEKAE_STATUS" id="LM_TATEKAE_STATUS" th:value="${qo.LM_KINMU_STATUS}">-->
+            <!--                <input type="hidden" name="TM_KINMU_STATUS" id="TM_KINMU_STATUS" th:value="${qo.TM_KINMU_STATUS}">-->
+            <!--                <input type="hidden" name="TM_KOUTU_STATUS" id="TM_KOUTU_STATUS" th:value="${qo.TM_KOUTU_STATUS}">-->
+            <!--                <input type="hidden" name="TM_TATEKAE_STATUS" id="TM_TATEKAE_STATUS" th:value="${qo.TM_TATEKAE_STATUS}">-->
+            <!--                <div class="form-group">-->
+            <!--                    <label for="keyword">关键字:</label>-->
+            <!--                    <input type="text" class="form-control" id="keyword" name="keyword" value="${(qo.keyword)!''}" placeholder="请输入姓名/电话">-->
+            <!--                </div>-->
+
+            <div class="select">
+                <ul>
+                    <!--                    <li>社員：<input name="STAFF_BG" id="STAFF_BG" th:value="${qo.STAFF_BG}"></li>-->
+                    <!--                    <li>キーワード：<input type="text" name="keyword" id="keyword" th:value="${qo.keyword}"　placeholder="名前またはメールアドレスを入れてください"></li>-->
+                    <li>
+
+
+                        <div class="form-group">
+                            <label for="keyword">社員名前:</label>
+                            <input type="text" class="form-control" id="keyword" name="keyword"
+                                   th:value="${qo.staffName}" placeholder="社員名前を入れてください">
+                        </div>
+                    </li>
+                    <li>月份:
+                        <select name="month" id="month" th:filed="${qo.month}"
+                                onChange="getVariety(this.options[this.selectedIndex].value)">
+                            <option value="0" th:selected="${qo.month==0}">先月</option>
+                            <option value="1" th:selected="${qo.month==1}">本月</option>
+                        </select>
+
+                    </li>
+                    <li class="current-month">当月勤務表状態：
+                        <select name="tmStatusKin" id="tmStatusKin" th:filed="${qo.statusKin}"
+                                th:value="${qo.statusKin}">
+                            <option value="">全ての状態</option>
+                            <option value="0" th:selected="${qo.statusKin==0}">未提出</option>
+                            <option value="1" th:selected="${qo.statusKin==1}">提出済</option>
+                            <option value="2" th:selected="${qo.statusKin==2}">承認済</option>
+                        </select>
+                    </li>
+                    <li class="current-month">当月交通状態：
+                        <select name="tmStatusKou" id="tmStatusKou" th:filed="${qo.statusKou}"
+                                th:value="${qo.statusKou}">
+                            <option value="">全ての状態</option>
+                            <option value="0" th:selected="${qo.statusKou==0}">未提出</option>
+                            <option value="1" th:selected="${qo.statusKou==1}">提出済</option>
+                            <option value="2" th:selected="${qo.statusKou==2}">承認済</option>
+                        </select>
+                    </li>
+                    <li class="current-month">当月立替金明細：
+                        <select name="tmStatusTat" id="tmStatusTat" th:filed="${qo.statusTat}"
+                                th:value="${qo.statusTat}">
+                            <option value="">全ての状態</option>
+                            <option value="0" th:selected="${qo.statusTat==0}">未提出</option>
+                            <option value="1" th:selected="${qo.statusTat==1}">提出済</option>
+                            <option value="2" th:selected="${qo.statusTat==2}">承認済</option>
+                        </select>
+                    </li>
+                    <li class="last-month" style="display: none">先月勤務表状態：
+                        <select name="lmStatusKin" id="lmStatusKin" th:filed="${qo.statusKin}"
+                                th:value="${qo.statusKin}">
+                            <option value="">全ての状態</option>
+                            <option value="0" th:selected="${qo.statusKin==0}">未提出</option>
+                            <option value="1" th:selected="${qo.statusKin==1}">提出済</option>
+                            <option value="2" th:selected="${qo.statusKin==2}">承認済</option>
+                        </select>
+                    </li>
+                    <li class="last-month" style="display: none">先月交通状態：
+                        <select name="lmStatusKou" id="lmStatusKou" th:filed="${qo.statusKou}"
+                                th:value="${qo.statusKou}">
+                            <option value="">全ての状態</option>
+                            <option value="0" th:selected="${qo.statusKou==0}">未提出</option>
+                            <option value="1" th:selected="${qo.statusKou==1}">提出済</option>
+                            <option value="2" th:selected="${qo.statusKou==2}">承認済</option>
+                        </select>
+                    </li>
+                    <li class="last-month" style="display: none">先月立替金明細：
+                        <select name="lmStatusTat" id="lmStatusTat" th:filed="${qo.statusTat}"
+                                th:value="${qo.statusTat}">
+                            <option value="">全ての状態</option>
+                            <option value="0" th:selected="${qo.statusTat==0}">未提出</option>
+                            <option value="1" th:selected="${qo.statusTat==1}">提出済</option>
+                            <option value="2" th:selected="${qo.statusTat==2}">承認済</option>
+                        </select>
+                    </li>
+
+                </ul>
+            </div>
+
+            <button id="btn_query" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span> 検索</button>
+        </form>
+
+        <div class="content-c">
+            <!--            <div class="c-kesaku">-->
+            <!--                <ul>-->
+            <!--                    <li></li>-->
+            <!--                    <li></li>-->
+            <!--                    <li></li>-->
+            <!--                    <li><img src="kensaku.jpeg" alt=""></li>-->
+            <!--                    <li><input type="button" class="kensaku" value="検　索"></li>-->
+            <!--                </ul>-->
+            <!--            </div>-->
+            <div>
+                <table>
+                    <colgroup>
+
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th rowspan="2">社員番号</th>
+                        <th rowspan="2">名前</th>
+                        <th rowspan="2">業務タイプ</th>
+                        <th rowspan="2">現在状況</th>
+                        <th colspan="5">先月</th>
+                        <th colspan="5">当月</th>
+                    </tr>
+                    <tr>
+                        <th>勤務表</th>
+                        <th>交通費</th>
+                        <th>立替金明細書</th>
+                        <th>勤務時間</th>
+                        <th>残業時間</th>
+                        <th>勤務表</th>
+                        <th>交通費</th>
+                        <th>立替金明細書</th>
+                        <th>勤務時間</th>
+                        <th>残業時間</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="staff:${result}">
+                            <td th:text="*{staff.STAFF_BG}"></td>
+                            <td><a href="#" th:text="${staff.STAFF_NAME}"></a></td>
+                            <td th:text="${staff.IT_TYPE}"></td>
+                            <td th:text="${staff.STAFF_STATUS}?'現場':'待机'"></td>
+                            <td class="gray-btn" th:switch="${staff.LM_KINMU_STATUS}">
+                                <form method="post" name ="checkStatus" target="_blank">
+                                    <button type="commit" class="LM_KINMU_STATUS commit" name ="status" th:case="'2'" th:value="${staff.LM_KINMU_STATUS}" onclick="javascript:this.form.action='/kinmuCheck'">承認済</button>
+                                    <button type="commit" class="LM_KINMU_STATUS commit" name ="status" th:case="'1'" th:value="${staff.LM_KINMU_STATUS}" onclick="javascript:this.form.action='/kinmuCheck'">提出済</button>
+                                    <span class="LM_KINMU_STATUS uncommit" name ="kinmu" th:case="'0'" th:value="${staff.LM_KINMU_STATUS}">未提出</span>
+                                    <input type="hidden" name="staffBg" th:value="${staff.STAFF_BG}">
+                                    <input type="hidden" name="month" value="LM">
+                                </form>
+                            </td>
+                            <td class="gray-btn" th:switch="${staff.LM_KOUTU_STATUS}">
+                                <form method="post" name ="checkStatus" target="_blank">
+                                    <button type="commit" class="LM_KOUTU_STATUS commit" name ="status" th:case="'2'" th:value="${staff.LM_KOUTU_STATUS}" onclick="javascript:this.form.action='/koutuCheck'">承認済</button>
+                                    <button type="commit" class="LM_KOUTU_STATUS commit" name ="status" th:case="'1'" th:value="${staff.LM_KOUTU_STATUS}" onclick="javascript:this.form.action='/koutuCheck'" >提出済</button>
+                                    <span class="LM_KOUTU_STATUS uncommit" name ="kinmu" th:case="'0'" th:value="${staff.LM_KOUTU_STATUS}">未提出</span>
+                                    <input type="hidden" name="staffBg" th:value="${staff.STAFF_BG}">
+                                    <input type="hidden" name="month" value="LM">
+                                </form>
+                            </td>
+                            <td class="gray-btn" th:switch="${staff.LM_TATEKAE_STATUS}">
+                                <form method="post" name ="checkStatus" target="_blank">
+                                    <button type="commit" class="LM_TATEKAE_STATUS commit" name ="status" th:case="'2'" th:value="${staff.LM_TATEKAE_STATUS}" onclick="javascript:this.form.action='/tatekaeCheck'">承認済</button>
+                                    <button type="commit" class="LM_TATEKAE_STATUS commit" name ="status" th:case="'1'" th:value="${staff.LM_TATEKAE_STATUS}" onclick="javascript:this.form.action='/tatekaeCheck'" >提出済</button>
+                                    <span class="LM_TATEKAE_STATUS" name ="kinmu" th:case="'0'" th:value="${staff.LM_TATEKAE_STATUS}">なし</span>
+                                    <input type="hidden" name="staffBg" th:value="${staff.STAFF_BG}">
+                                    <input type="hidden" name="month" value="LM">
+                                </form>
+                            </td>
+                            <td th:text="${staff.LM_WORK_TIME}"></td>
+                            <td th:text="${staff.LM_ZANGYOU_TIME}"></td>
+
+                            <td class="gray-btn" th:switch="${staff.TM_KINMU_STATUS}">
+                                <form method="post" name ="checkStatus" target="_blank">
+                                    <button type="commit" class="TM_KINMU_STATUS commit" name ="status" th:case="'2'" th:value="${staff.TM_KINMU_STATUS}" onclick="javascript:this.form.action='/kinmuCheck'">承認済</button>
+                                    <button type="commit" class="TM_KINMU_STATUS commit" name ="status" th:case="'1'" th:value="${staff.TM_KINMU_STATUS}" onclick="javascript:this.form.action='/kinmuCheck'">提出済</button>
+                                    <span class="TM_KINMU_STATUS uncommit" name ="kinmu" th:case="'0'" th:value="${staff.TM_KINMU_STATUS}">未提出</span>
+                                    <input type="hidden" name="staffBg" th:value="${staff.STAFF_BG}">
+                                    <input type="hidden" name="month" value="TM">
+                                </form>
+                            </td>
+                            <td class="gray-btn" th:switch="${staff.TM_KOUTU_STATUS}">
+                                <button type="commit" class="TM_KOUTU_STATUS commit" name ="status" th:case="'2'" th:value="${staff.TM_KOUTU_STATUS}" onclick="javascript:this.form.action='/koutuCheck'">承認済</button>
+                                <button type="commit" class="TM_KOUTU_STATUS commit" name ="status" th:case="'1'" th:value="${staff.TM_KOUTU_STATUS}" onclick="javascript:this.form.action='/koutuCheck'">提出済</button>
+                                <span class="TM_KOUTU_STATUS uncommit" name ="kinmu" th:case="'0'" th:value="${staff.TM_KOUTU_STATUS}">未提出</span>
+                                <input type="hidden" name="staffBg" th:value="${staff.STAFF_BG}">
+                                <input type="hidden" name="month" value="TM">
+                            </td>
+
+                            <td class="gray-btn" th:switch="${staff.TM_TATEKAE_STATUS}">
+                                <button type="commit" class="TM_TATEKAE_STATUS commit" name ="status" th:case="'2'" th:value="${staff.TM_TATEKAE_STATUS}" onclick="javascript:this.form.action='/tatekaeCheck'">承認済</button>
+                                <button type="commit" class="TM_TATEKAE_STATUS commit" name ="status" th:case="'1'" th:value="${staff.TM_TATEKAE_STATUS}" onclick="javascript:this.form.action='/tatekaeCheck'">提出済</button>
+                                <span class="TM_TATEKAE_STATUS" name ="kinmu" th:case="'0'" th:value="${staff.TM_TATEKAE_STATUS}">なし</span>
+                                <input type="hidden" name="staffBg" th:value="${staff.STAFF_BG}">
+                                <input type="hidden" name="month" value="TM">
+                            </td>
+                            <td th:text="${staff.TM_WORK_TIME}"></td>
+                            <td th:text="${staff.TM_ZANGYOU_TIME}"></td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <form action="/staff">
+                <div class="content-f">
+                    <ul>
+                        <li><button type="commit" value="戻る" class="btn">戻る</button></li>
+<!--                        <li><input type="button" value="閉じる"></li>-->
+                    </ul>
+                </div>
+        </form>
+            <br>
+
+<!--        <div style="text-align: center;">-->
+<!--            <ul id="pagination" class="pagination"></ul>-->
+<!--        </div>-->
+<!--        <form th:object="#{pageMsg}">-->
+<!--            <div>-->
+<!--                <input type="hidden" name="month" th:>-->
+<!--                <input type="hidden" name="statusKin">-->
+<!--                <input type="hidden" name="statusKou">-->
+<!--                <input type="hidden" name="statusTat">-->
+<!--                <a>[TOP]</a>-->
+<!--                <a>[BACK]</a>-->
+<!--                <a>[NEXT]</a>-->
+<!--                <a>[END]</a>-->
+<!--            </div>-->
+<!--            <ul class="pagination pagination-lg" >-->
+<!--                <li th:class="${pageMsg.indexPage==1}?'disabled' : ''"><a href="#">上一页</a></li>-->
+<!--                <li th:if="${pageMsg.indexPage-3 >=1}" ><a th:href="@{'admin_law_list.html?page=' + ${pageMsg.indexPage-3}}" th:text="${pageMsg.indexPage -3}" >1</a></li>-->
+<!--                <li th:if="${pageMsg.indexPage-2 >=1}" ><a th:href="@{'admin_law_list.html?page=' + ${pageMsg.indexPage-2}}" th:text="${pageMsg.indexPage -2}" >1</a></li>-->
+<!--                <li th:if="${pageMsg.indexPage-1 >=1}" ><a th:href="@{'admin_law_list.html?page=' + ${pageMsg.indexPage-1}}" th:text="${pageMsg.indexPage -1}" >1</a></li>-->
+<!--                <li class="active"><a href="#" th:text="${pageMsg.indexPage}" >1</a></li>-->
+<!--                <li th:if="${pageMsg.indexPage+1 <=pageMsg.totalPage}" ><a th:href="@{'admin_law_list.html?page=' + ${pageMsg.indexPage+1}}" th:text="${pageMsg.indexPage +1}" >1</a></li>-->
+<!--                <li th:if="${pageMsg.indexPage+2 <=pageMsg.totalPage}" ><a th:href="@{'admin_law_list.html?page=' + ${pageMsg.indexPage+2}}" th:text="${pageMsg.indexPage +2}" >1</a></li>-->
+<!--                <li th:if="${pageMsg.indexPage+3 <=pageMsg.totalPage}" ><a th:href="@{'admin_law_list.html?page=' + ${pageMsg.indexPage+3}}" th:text="${pageMsg.indexPage +3}" >1</a></li>-->
+
+<!--                <li th:class="${pageMsg.indexPage==pageMsg.totalPage}?'disabled' : ''" ><a href="#">下一页</a></li>-->
+<!--            </ul><br>-->
+<!--        </form>-->
+
+<!--                <div>-->
+<!--                    <a th:href="@{/staff/test-t(currentPage=0)}">[首  页]</a>-->
+<!--                    <a th:href="@{/staff/test(currentPage=${staffPageInfo.pageNum - 1})}">[上一页]</a>-->
+<!--                    <a th:href="@{/staff/test(currentPage=${staffPageInfo.pageNum + 1})}">[下一页]</a>-->
+<!--                    <a th:href="@{/staff/test(currentPage=${staffPageInfo.pages})}">[末  页]</a>-->
+<!--                </div>-->
+<!--                    <span style="font-size:14px;">-->
+<!--                    <div class="text-center">-->
+<!--                        <ul id="pagination-demo" class="pagination-sm"></ul>-->
+<!--                    </div>-->
+<!--                </span>-->
+    </div>
+</div>
+</body>
+
+</html>

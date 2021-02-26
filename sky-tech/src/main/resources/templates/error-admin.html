@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="common/link::common_header" />
+    <th:block th:replace="common/link::common_js" />
+
+    <title>Title</title>
+    <script th:inline="javascript">
+        $(function() {
+
+            //菜单初始
+            $('.sidebar-menu').tree();
+            //菜单激活
+            var currentMenu = $("input[name='currentMenu']").val();
+
+            //菜单激活
+            var cuLi = $('.treeview-menu li[name="' + currentMenu + '"]');
+            cuLi.addClass("active");
+            cuLi.closest(".treeview").addClass("active");
+
+            var msg = $("#msg").val();
+            if (!msg){
+                $("#msg").text("エラーが発生しました。管理者に連絡してください。")
+            }
+        })
+        </script>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <div th:replace="/common/menu :: menuInfo" ></div>
+    <input type="hidden" name="currentMenu" id="currentMenu" th:value="${currentMenu !=null ? currentMenu :''}">
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>間違った操作</h1>
+        </section>
+        <section class="content">
+            <div class="box">
+                <div style="margin: 10px;">
+                    <div class="row col-sm-10" >
+                        <div id="login_center">
+                            <div id="login_area">
+                                <div id="login_box">
+                                    <div id="login_form">
+                                        <span id="msg" th:text="${msg}" style="color: red"></span>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+</div>
+</body>
+</html>

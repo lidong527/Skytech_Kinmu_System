@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Title</title>
+</head>
+<body>
+LOGIN!
+<table border="1">
+    <tr>
+        <td>ID</td>
+        <td>NAME</td>
+        <td>START</td>
+        <td>END</td>
+    </tr>
+    <tr th:each="info:${infoForms}">
+        <td th:text="${info.id}"></td>
+        <td th:text="${info.name}"></td>>
+        <td th:text="${info.start}"></td>>
+        <td th:text="${info.end}"></td>
+    </tr>
+</table>
+</body>
+</html>

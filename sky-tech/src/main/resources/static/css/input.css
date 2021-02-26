@@ -1,0 +1,26 @@
+body {
+    background-color: lightblue;
+}
+.main{
+    position: absolute;
+    left: 35%;
+
+}
+.long{
+    width: 280px;
+    height: 30px;
+    /*边框圆角*/
+    border-radius: 5px;
+    /*隐藏边框线*/
+    border: none;
+    margin: 10px;
+}
+.sub{
+    width: 90px;
+    height: 30px;
+    margin: 10px;
+    background-color: orange;
+    border-radius: 5px;
+    border: none;
+    color: white;
+}

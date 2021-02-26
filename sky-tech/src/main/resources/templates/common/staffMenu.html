@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<script th:inline="javascript">
+    $(function () {
+        //菜单初始
+        $('.sidebar-menu').tree();
+        var current = [[${currentMenu}]];
+
+        //菜单激活
+        var cuLi = $(".treeview-menu li[name='[[${currentMenu}]]']");
+        cuLi.addClass("active");
+        cuLi.closest(".treeview").addClass("active")
+    })
+</script>
+<aside class="main-sidebar" th:fragment="menuInfo">
+    <section class="sidebar">
+        <!-- search form -->
+        <!--  <form action="#" method="get" class="sidebar-form">
+              <div class="input-group">
+                  <input type="text" name="q" class="form-control" placeholder="Search...">
+                  <span class="input-group-btn">
+                  <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                  </button>
+                </span>
+              </div>
+          </form>-->
+
+        <div align="center" style="margin-top: -20px;margin-bottom: 10px">
+            <!--            <form method="get">-->
+            <!--                <button class="btn btn-danger" type ="button" href="/logout">ログアウト</button>-->
+            <!--            </form>-->
+            <a style="background-color: #F03E41; display:block; text-align:center; line-height:35px;
+            border: 0px solid;border-radius: 5px; width: 100px; height: 35px; color:white;"
+               href="/logout"> ログアウト </a>
+        </div>
+        <ul class="sidebar-menu" data-widget="tree">
+
+            <li name="kojin">
+                <a href="/kojin">
+                    <i class="fa fa-laptop"></i>個人情報
+
+            <!--                    <span class="pull-right-container">-->
+<!--                        <i class="fa fa-angle-left pull-right"></i>-->
+                    </span>
+                </a>
+            </li>
+
+            <li name="koutu">
+                <a href="/koutu">
+                    <i class="fa fa-edit"></i>
+                    <span>交通費提出</span>
+<!--                    <span class="pull-right-container">-->
+<!--              <i class="fa fa-angle-left pull-right"></i>-->
+            </span>
+                </a>
+            </li>
+            <li name="kinmu">
+                <a href="/kinmu">
+                    <i class="fa fa-edit"></i>
+                    <span>勤務表提出</span>
+<!--                    <span class="pull-right-container">-->
+<!--                    <i class="fa fa-angle-left pull-right"></i>-->
+                    </span>
+                </a>
+            </li>
+            <li name="tatekae">
+                <a href="/tatekae">
+                    <i class="fa fa-edit"></i>
+                    <span>立替金提出</span>
+<!--                    <span class="pull-right-container">-->
+<!--                    <i class="fa fa-angle-left pull-right"></i>-->
+                    </span>
+                </a>
+            </li>
+            <li name="koutuQueryListByBg">
+                <a href="/koutuQueryListByBg">
+                    <i class="fa fa-check-square"></i>
+                    <span>交通費提出情報照会</span>
+<!--                    <span class="pull-right-container">-->
+<!--                    <i class="fa fa-angle-left pull-right"></i>-->
+                    </span>
+                </a>
+            </li>
+
+
+            <li name="kinmuQueryListByBg">
+                <a href="/kinmuQueryListByBg">
+                    <i class="fa fa-check-square"></i>
+                    <span>勤務表提出情報照会</span>
+<!--                    <span class="pull-right-container">-->
+<!--                    <i class="fa fa-angle-left pull-right"></i>-->
+                </span>
+                </a>
+            </li>
+
+            <li name="tateQueryListByBg">
+                <a href="/tateQueryListByBg">
+                    <i class="fa fa-check-square"></i>
+                    <span>立替金提出情報照会</span>
+<!--                    <span class="pull-right-container">-->
+<!--                    <i class="fa fa-angle-left pull-right"></i>-->
+                </span>
+                </a>
+            </li>
+        </ul>
+    </section>
+</aside>
+
+
+</html>

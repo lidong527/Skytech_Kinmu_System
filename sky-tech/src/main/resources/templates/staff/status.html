@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta content="" name="description" />
+    <meta content="webthemez" name="author" />
+    <link href="/css/bootstrap.css" rel="stylesheet" />
+    <!-- FontAwesome Styles-->
+    <link href="/css/font-awesome.css" rel="stylesheet" />
+    <!-- Custom Styles-->
+    <link href="/css/custom-styles.css" rel="stylesheet" />
+    <!-- Google Fonts-->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>社員情報</title>
+    <style>
+        .column{
+            text-align: right;
+        }
+        .ButtonClose{
+            width:265px;height:30px;
+        }
+        .TransportationLastMonth{
+            color: blue;
+        }
+        .ServiceSheetLastMonth{
+            color: limegreen;
+        }
+        .ServiceSheetThisMonth{
+            color: red;
+        }
+        table{
+            border-collapse: separate;
+            border-spacing: 10px 10px;  /* 水平间距 垂直间距 */
+        }
+        .panel-body{
+            border-spacing: 10px 5px;  /* 水平间距 垂直间距 */
+        }
+        .nav li.selected{
+            animation: tada 1s .2s ease both;
+            -moz-animation: tada 1s .2s ease both;
+            background-color: thistle;
+            color: #97a0b3;
+            font-family: cursive;
+            font-size: 20px;
+        }
+        @keyframes tada{
+            0%{-webkit-transform:scale(1);}
+
+            10%, 20%{-webkit-transform:scale(0.9) rotate(-3deg);}
+
+            30%, 50%, 70%, 90%{-webkit-transform:scale(1.1) rotate(3deg);}
+
+            40%, 60%, 80%{-webkit-transform:scale(1.1) rotate(-3deg);}
+
+            100%{-webkit-transform:scale(1) rotate(0);}}
+        #grad {
+            height: 500px;
+            width: 100%;
+
+            background-image: linear-gradient(to bottom, thistle , black);
+        }
+    </style>
+    <script th:inline="javascript">
+
+        $(function () {
+            var staffStatus = [[${staff.staffStatus}]];
+            var staffBg = [[${staff.staffBg}]];
+            console.log(staffStatus);
+            if (staffStatus == 0){
+                $(".gennba").css("display","none");
+            }
+            console.log($(".gray-btn span"));
+            console.log($(".gray-btn span").text());
+            $(".gray-btn span").each(function(){
+                console.log($(this).text());
+                var tableStatus = $(this).text();
+                if (tableStatus == "承認済"){
+                    $(this).css("color","limegreen");
+                    var mybtn = $(this).parents("td").next("td").children("button");
+
+                    $(mybtn).attr("disabled","disabled");
+                    $(this).attr("disabled","disabled");
+                }
+                if (tableStatus == "未提出"){
+                    $(this).css("color","red");
+                }
+                if (tableStatus == "提出済み"){
+
+                    $(this).css("color","blue");
+                }
+            });
+            // $(".status-btn").click(function () {
+            //     console.log($(this).attr('id'));
+            //     var id = $(this).attr('id');
+            //     if (id == "l-kinmu" || id == "kinmu"){
+            //         window.location.href = "staffInput/kinmuMsgtemp.html";
+            //     }
+            //     if (id == "l-tatekae" || id == "tatekae"){
+            //         window.location.href = "staffInput/tatekaekin.html";
+            //     }
+            //     if (id == "l-koutu" || id == "koutu"){
+            //         this.form.action = "/koutu";
+            //     }
+            //
+            // })
+
+        })
+
+
+    </script>
+</head>
+<body >
+<nav class="navbar navbar-default top-navbar" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <p class="navbar-brand"><strong>メニュー</strong></p>
+        <div id="sideNav" href="">
+            <i class="fa fa-bars icon"></i>
+        </div>
+    </div>
+</nav>
+<!--/. NAV TOP  -->
+<nav class="navbar-default navbar-side" role="navigation">
+    <div class="sidebar-collapse">
+        <nav class="navbar-default navbar-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
+                    <li class="selected" >
+                        <a href="/kojin"><i class="fa fa-desktop"></i>
+                            <!-- 二维码 -->
+                            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                                 width="30" height="30"
+                                 viewBox="0 0 172 172"
+                                 style=" fill:#000000;"><defs><linearGradient x1="61.8125" y1="104.8125" x2="61.8125" y2="116.58913" gradientUnits="userSpaceOnUse" id="color-1_43650_gr1"><stop offset="0" stop-color="#fcf3fd"></stop><stop offset="1" stop-color="#6edafc"></stop></linearGradient><linearGradient x1="110.1875" y1="56.4375" x2="110.1875" y2="68.86719" gradientUnits="userSpaceOnUse" id="color-2_43650_gr2"><stop offset="0" stop-color="#fcf3fd"></stop><stop offset="1" stop-color="#6edafc"></stop></linearGradient><linearGradient x1="86" y1="18.36369" x2="86" y2="154.59038" gradientUnits="userSpaceOnUse" id="color-3_43650_gr3"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="61.8125" y1="18.36369" x2="61.8125" y2="154.59038" gradientUnits="userSpaceOnUse" id="color-4_43650_gr4"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="61.8125" y1="18.36369" x2="61.8125" y2="154.59038" gradientUnits="userSpaceOnUse" id="color-5_43650_gr5"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="110.1875" y1="18.36369" x2="110.1875" y2="154.59038" gradientUnits="userSpaceOnUse" id="color-6_43650_gr6"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="110.1875" y1="18.36369" x2="110.1875" y2="154.59038" gradientUnits="userSpaceOnUse" id="color-7_43650_gr7"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="61.8125" y1="18.36369" x2="61.8125" y2="154.59038" gradientUnits="userSpaceOnUse" id="color-8_43650_gr8"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="61.8125" y1="18.36369" x2="61.8125" y2="154.59038" gradientUnits="userSpaceOnUse" id="color-9_43650_gr9"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="99.4375" y1="18.36369" x2="99.4375" y2="154.59038" gradientUnits="userSpaceOnUse" id="color-10_43650_gr10"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="94.0625" y1="18.36369" x2="94.0625" y2="154.59038" gradientUnits="userSpaceOnUse" id="color-11_43650_gr11"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="107.5" y1="18.36369" x2="107.5" y2="154.59038" gradientUnits="userSpaceOnUse" id="color-12_43650_gr12"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="123.625" y1="18.36369" x2="123.625" y2="154.59038" gradientUnits="userSpaceOnUse" id="color-13_43650_gr13"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="110.1875" y1="18.36369" x2="110.1875" y2="154.59038" gradientUnits="userSpaceOnUse" id="color-14_43650_gr14"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="126.3125" y1="18.36369" x2="126.3125" y2="154.59038" gradientUnits="userSpaceOnUse" id="color-15_43650_gr15"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="119.59375" y1="18.36369" x2="119.59375" y2="154.59038" gradientUnits="userSpaceOnUse" id="color-16_43650_gr16"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="120.9375" y1="18.36369" x2="120.9375" y2="154.59038" gradientUnits="userSpaceOnUse" id="color-17_43650_gr17"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="99.4375" y1="18.36369" x2="99.4375" y2="154.59038" gradientUnits="userSpaceOnUse" id="color-18_43650_gr18"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="61.8125" y1="56.4375" x2="61.8125" y2="68.86719" gradientUnits="userSpaceOnUse" id="color-19_43650_gr19"><stop offset="0" stop-color="#fcf3fd"></stop><stop offset="1" stop-color="#6edafc"></stop></linearGradient></defs><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-size="none"  style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g><path d="M56.4375,104.8125h10.75v10.75h-10.75z" fill="url(#color-1_43650_gr1)"></path><path d="M104.8125,56.4375h10.75v10.75h-10.75z" fill="url(#color-2_43650_gr2)"></path><path d="M139.75,18.8125h-107.5c-7.40944,0 -13.4375,6.02806 -13.4375,13.4375v107.5c0,7.40944 6.02806,13.4375 13.4375,13.4375h107.5c7.40944,0 13.4375,-6.02806 13.4375,-13.4375v-107.5c0,-7.40944 -6.02806,-13.4375 -13.4375,-13.4375zM147.8125,139.75c0,4.44512 -3.61738,8.0625 -8.0625,8.0625h-107.5c-4.44513,0 -8.0625,-3.61738 -8.0625,-8.0625v-107.5c0,-4.44513 3.61737,-8.0625 8.0625,-8.0625h107.5c4.44512,0 8.0625,3.61737 8.0625,8.0625z" fill="url(#color-3_43650_gr3)"></path><path d="M77.9375,88.6875h-32.25c-2.96431,0 -5.375,2.41069 -5.375,5.375v32.25c0,2.96431 2.41069,5.375 5.375,5.375h32.25c2.96431,0 5.375,-2.41069 5.375,-5.375v-32.25c0,-2.96431 -2.41069,-5.375 -5.375,-5.375zM45.6875,126.3125v-32.25h32.25l0.00538,32.25z" fill="url(#color-4_43650_gr4)"></path><path d="M67.1875,99.4375h-10.75c-2.96431,0 -5.375,2.41069 -5.375,5.375v10.75c0,2.96431 2.41069,5.375 5.375,5.375h10.75c2.96431,0 5.375,-2.41069 5.375,-5.375v-10.75c0,-2.96431 -2.41069,-5.375 -5.375,-5.375zM56.4375,115.5625v-10.75h10.75l0.00538,10.75z" fill="url(#color-5_43650_gr5)"></path><path d="M126.3125,40.3125h-32.25c-2.96431,0 -5.375,2.41069 -5.375,5.375v32.25c0,2.96431 2.41069,5.375 5.375,5.375h32.25c2.96431,0 5.375,-2.41069 5.375,-5.375v-32.25c0,-2.96431 -2.41069,-5.375 -5.375,-5.375zM94.0625,77.9375v-32.25h32.25l0.00538,32.25z" fill="url(#color-6_43650_gr6)"></path><path d="M115.5625,51.0625h-10.75c-2.96431,0 -5.375,2.41069 -5.375,5.375v10.75c0,2.96431 2.41069,5.375 5.375,5.375h10.75c2.96431,0 5.375,-2.41069 5.375,-5.375v-10.75c0,-2.96431 -2.41069,-5.375 -5.375,-5.375zM104.8125,67.1875v-10.75h10.75l0.00538,10.75z" fill="url(#color-7_43650_gr7)"></path><path d="M77.9375,40.3125h-32.25c-2.96431,0 -5.375,2.41069 -5.375,5.375v32.25c0,2.96431 2.41069,5.375 5.375,5.375h32.25c2.96431,0 5.375,-2.41069 5.375,-5.375v-32.25c0,-2.96431 -2.41069,-5.375 -5.375,-5.375zM45.6875,77.9375v-32.25h32.25l0.00538,32.25z" fill="url(#color-8_43650_gr8)"></path><path d="M67.1875,51.0625h-10.75c-2.96431,0 -5.375,2.41069 -5.375,5.375v10.75c0,2.96431 2.41069,5.375 5.375,5.375h10.75c2.96431,0 5.375,-2.41069 5.375,-5.375v-10.75c0,-2.96431 -2.41069,-5.375 -5.375,-5.375zM56.4375,67.1875v-10.75h10.75l0.00538,10.75z" fill="url(#color-9_43650_gr9)"></path><path d="M94.0625,104.8125h10.75v10.75h5.375v-10.75c0,-2.96431 -2.41069,-5.375 -5.375,-5.375h-10.75v-5.375h5.375v-5.375h-5.375c-2.96431,0 -5.375,2.41069 -5.375,5.375v13.4375h5.375z" fill="url(#color-10_43650_gr10)"></path><path d="M94.0625,112.875h-5.375v13.4375c0,2.96431 2.41069,5.375 5.375,5.375h5.375v-5.375h-5.375z" fill="url(#color-11_43650_gr11)"></path><path d="M104.8125,88.6875h5.375v5.375h-5.375z" fill="url(#color-12_43650_gr12)"></path><path d="M126.3125,88.6875h-10.75v5.375h10.75v13.4375h5.375v-13.4375c0,-2.96431 -2.41069,-5.375 -5.375,-5.375z" fill="url(#color-13_43650_gr13)"></path><path d="M110.1875,120.9375h-5.375v5.375c0,2.96431 2.41069,5.375 5.375,5.375h5.375v-5.375h-5.375z" fill="url(#color-14_43650_gr14)"></path><path d="M126.3125,126.3125h-5.375v5.375h5.375c2.96431,0 5.375,-2.41069 5.375,-5.375v-13.4375h-5.375z" fill="url(#color-15_43650_gr15)"></path><path d="M123.625,120.9375v-5.375c0,-2.96431 -2.41069,-5.375 -5.375,-5.375h-2.6875v5.375h2.6875v5.375z" fill="url(#color-16_43650_gr16)"></path><path d="M118.25,99.4375h5.375v5.375h-5.375z" fill="url(#color-17_43650_gr17)"></path><path d="M96.75,115.5625h5.375v5.375h-5.375z" fill="url(#color-18_43650_gr18)"></path><path d="M56.4375,56.4375h10.75v10.75h-10.75z" fill="url(#color-19_43650_gr19)"></path></g></g></svg>
+                            &nbsp;
+                            個人情報</a>
+                    </li>
+                    <li>
+                        <a href="/koutu"><i class="fa fa-desktop"></i> 交通費提出</a>
+                    </li>
+                    <li>
+                        <a href="/kinmu"><i class="fa fa-desktop"></i> 勤務表提出</a>
+                    </li>
+                    <li>
+                        <a href="/tatekae"><i class="fa fa-desktop"></i> 立替金提出</a>
+                    </li>
+
+                    <li>
+                        <a href="/koutuQueryListByBg"><i class="fa fa-sitemap"></i> 交通費提出情報照会</a>
+                    </li>
+                    <li>
+                        <a href="/kinmuQueryListByBg"><i class="fa fa-sitemap"></i> 勤務表提出情報照会</a>
+                    </li>
+                    <li>
+                        <a href="/tateQueryListByBg"><i class="fa fa-sitemap"></i> 立替金提出情報照会</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</nav>
+<!-- /. NAV SIDE  -->
+<div id="page-wrapper" th:style="'background:url(' +@{/picture/98k.jpeg} + ')'">
+<div align="center">     <!--class="panel panel-default"-->
+    <div class="panel-heading" style="font-family: cursive;">
+        <h2>Sky-tech個人情報</h2> <br>
+    </div>
+
+    <div class="panel-body" id="grad">     <!--class="panel-body"-->
+        <table th:object="${staff}">
+            <tr>
+                <td class="column">社員番号：</td>
+                <td th:text="*{staffBg}"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td  class="column">名前：</td>
+                <td th:utext="*{staffName}"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="column">性别：</td>
+                <td th:text="*{staffSex}"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="column">現在状態：</td>
+                <td th:text="*{staffStatus}"></td>
+                <td></td>
+            </tr>
+            <tr class="gennba">
+                <td class="column">現場名前：</td>
+                <td th:text="*{ganbanName}"></td>
+                <td></td>
+            </tr>
+            <tr class="gennba">
+                <td class="column">現場基準：</td>
+                <td th:text="*{standardTime}"></td>
+                <td></td>
+            </tr>
+            <tr class="gennba">
+                <td class="column">現場精算：</td>
+                <td th:text="*{upperTime}"></td>
+                <td></td>
+            </tr>
+            <tr></tr>
+<!--            zhou 20201027 -->
+
+            <tr>
+                <td class="column">交通費提出：</td>
+                <td class="gray-btn" th:switch="*{tmKoutu}">
+                    <span class="TransportationLastMonth" th:case="'0'" th:value="*{tmKoutu}">未提出</span>
+                    <span class="ServiceSheetLastMonth"  th:case="'1'" th:value="*{tmKoutu}">提出済み</span>
+                    <span class="ServiceSheetThisMonth"  th:case="'2'" th:value="*{tmKoutu}">承認済</span>
+                </td>
+                <td>
+                    <form th:object="${flag}" action="/koutu">
+                        <input type="hidden" th:value="*{tmFlag}" name = "tmFlag"/>
+                        <button class="btn btn-default btn-xs status-btn" id="koutu">手動入力</button>
+                    </form>
+                </td>
+            </tr>
+            <tr class="gennba">
+                <td class="column">勤務表提出：</td>
+                <td class="gray-btn" th:switch="*{tmkinmu}">
+                    <span class="TransportationLastMonth" th:case="'0'" th:value="*{tmkinmu}">未提出</span>
+                    <span class="ServiceSheetLastMonth"  th:case="'1'" th:value="*{tmkinmu}">提出済み</span>
+                    <span class="ServiceSheetThisMonth"  th:case="'2'" th:value="*{tmkinmu}">承認済</span>
+                    <span th:case="'-1'">なし</span>
+                </td>
+                <td>
+                    <form th:object="${flag}" action="/kinmu">
+                        <input type="hidden" th:value="*{tmFlag}" name = "tmFlag"/>
+                        <button class="btn btn-default btn-xs status-btn" id="kinmu" th:value="*{tmFlag}">手動入力</button>
+                    </form>
+                </td>
+            </tr>
+            <tr class="gennba">
+                <td class="column">立替金明細書：</td>
+                <td class="gray-btn" th:switch="*{tmTate}">
+                    <span class="TransportationLastMonth" th:case="'0'" th:value="*{tmTate}">未提出</span>
+                    <span class="ServiceSheetLastMonth"  th:case="'1'" th:value="*{tmTate}">提出済み</span>
+                    <span class="ServiceSheetThisMonth"  th:case="'2'" th:value="*{tmTate}">承認済</span>
+                </td>
+                <td>
+                    <form th:object="${flag}" action="/tatekae">
+                        <input type="hidden" th:value="*{tmFlag}" name = "tmFlag"/>
+                        <button class="btn btn-default btn-xs status-btn" id="tatekae" th:value="*{tmFlag}">手動入力</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+<!--        <div>-->
+<!--            <button class="ButtonClose">組員の状態を確認する</button>-->
+<!--        </div><br>-->
+        <form>
+            <div>
+                <button class="btn btn-primary ButtonClose status-btn" id="infoChange" onclick="javascript:this.form.action='/signUp'">自分の情報を変更する</button>
+            </div>
+        </form>
+        <br>
+        <form>
+            <div>
+                <button class="btn btn-primary ButtonClose status-btn" id="passwordChange" onclick="javascript:this.form.action='/passwordChange'">パスワードを変更する</button>
+            </div>
+        </form>
+        <br>
+        <div>
+            <form>
+                <button class="ButtonClose" onclick="javascript:this.form.action='/windowClose'">×閉じる</button>
+            </form>
+        </div><br>
+    </div>
+</div>
+</div>
+</body>
+
+</html>

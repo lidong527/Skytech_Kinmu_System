@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Title</title>
+</head>
+<body>
+aaa
+<input type="text" th:value="*{msg}"></input>
+<form method="post" th:object="${loginForm}">
+    <label>ID:</label>
+    <input type="text" th:field="*{id}"></input>
+    <br></br>
+    <label>password:</label>
+    <input type="password" th:field="*{password}"></input>
+    <br></br>
+    <input type="submit" value="submit" onclick="javascript:this.form.action='/login'"></input>
+    <input type="submit" value="login" onclick="javascript:this.form.action='/login2'"></input>
+    <input type="reset" value="reset"></input>
+</form>
+</body>
+<script>
+
+</script>
+</html>

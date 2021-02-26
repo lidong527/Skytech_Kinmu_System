@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="common/link::common_header" />
+    <th:block th:replace="common/link::common_js" />
+
+    <title>社員退職処理</title>
+
+    <script th:inline="javascript">
+
+        $(function(){
+
+            var month = [[${qo.month}]];
+            var searchMonth = [[${qo.monthFlag}]];
+            // getVariety(searchMonth);
+
+            $("#btn_query").click(function () {
+                var keyword = $("#keyword").val();
+                var staffbg = $("#STAFF_BG").val();
+
+                $("#keyword").val(trim(keyword));
+                $("#STAFF_BG").val(trim(staffbg));
+
+                $("#currentPage").val(1);
+                $("#searchForm").submit();
+            });
+
+            //菜单初始
+            $('.sidebar-menu').tree();
+            //方法二：
+            (function ($) {
+                $.getUrlParam = function (name) {
+                    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                    var r = window.location.search.substr(1).match(reg);
+                    if (r != null) return unescape(r[2]); return null;                 }
+            })(jQuery);
+            var cuLi;
+
+            var currentMenu = $("input[name='currentMenu']").val();
+
+            //菜单激活
+            cuLi = $('.treeview-menu li[name="'+ currentMenu +'"]');
+            cuLi.addClass("active");
+            cuLi.closest(".treeview").addClass("active")
+
+
+            var p = [[${result.totalPage}]];
+            var pageNum = [[${result.currentPage}]];
+            $("#pagination").twbsPagination({
+
+
+                totalPages: p || 1,
+                startPage: pageNum || 1,
+                visiblePages:5,
+                first:"首页",
+                prev:"上页",
+                next:"下页",
+                last:"尾页",
+                initiateStartPageClick:false,
+                onPageClick:function(event,page){
+                    $("#currentPage").val(page);
+                    $("#currentMenu").val(currentMenu);
+                    $("#searchForm").submit();
+                }
+            });
+
+
+        })
+        function submitForm(formName) {
+            $("#" + formName).ajaxSubmit(function (data) {
+                if(data.success){
+                    $.messager.alert("注意","承認が成功しました。まもなく自動的に提出します");
+                    setTimeout(function () {
+                        //2s后刷新页面
+                        window.location.reload();
+                    },2000)
+                }else{
+                    $.messager.alert("注意",data.emsg+"まもなく自動的にリフレシュします");
+                }
+            })
+        }
+        //a链接跳转到详细页面
+        function validate(){
+            console.log(this);
+            document.getElementById('detailForm').submit();
+        }
+
+        function check(id){
+            if(confirm('是否辞退')){
+                $.ajax({
+                    url : "/retirementCheck?staffBG="+id,
+                    async : true,
+                    type : "GET",
+                    // 成功后开启模态框
+                    success : showInfo,
+                    error : function() {
+                        alert("失败になりました");
+                    },
+                    dataType : "json"
+                })
+            }
+        }
+
+        function showInfo(data){
+            if (data === 1){
+                alert("辞退成功");
+            }
+        }
+
+    </script>
+    <style type="text/css">
+
+
+    </style>
+</head>
+<body class="hold-transition skin-blue sidebar-mini" >
+<!--<input type="hidden" name="currentMenu" id="currentMenu">-->
+<div class="wrapper">
+    <div th:replace="/common/menu :: menuInfo" ></div>
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>辞退社員</h1>
+        </section>
+        <section class="content">
+            <div class="box">
+                <!--高级查询--->
+                <form class="form-inline" id="searchForm" action="/retirement" method="post">
+                    <input type="hidden" name="currentMenu" id="currentMenu" th:value="${qo.currentMenu}">
+                    <input type="hidden" name="currentPage" id="currentPage" >
+                    <input type="hidden" name="contractType" id="contractType" th:value="${qo.contractType}" >
+                    <div class="form-group">
+                        <label for="keyword">社員名前:</label>
+                        <input type="text" class="form-control" id="keyword" name="keyword"
+                               th:value="${qo.keyword}" placeholder="社員名前を入れてください">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="STAFF_BG">社員番号:</label>
+                        <input type="text" class="form-control" id="STAFF_BG" name="STAFF_BG"
+                               th:value="${qo.STAFF_BG}" placeholder="社員番号を入れてください">
+                    </div>
+
+                    <button id="btn_query" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span> 検索</button>
+                </form>
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th rowspan="2">操作</th>
+
+                        <th rowspan="2">社員番号</th>
+                        <th rowspan="2">名前</th>
+                        <th rowspan="2">性别</th>
+                        <th rowspan="2">メールアドレス</th>
+
+                        <th rowspan="2">業務タイプ</th>
+                        <th rowspan="2">契约种类</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="staff:${result.data}">
+
+                        <td>
+                            <button class="btn btn-danger" th:onclick="'javascript:check( \''+${staff.STAFF_BG}+'\');'">退職</button>
+                        </td>
+
+                        <td th:text="*{staff.STAFF_BG}" ></td>
+                        <td th:text="${staff.STAFF_NAME}"></td>
+                        <td th:text="${staff.STAFF_SEX}"></td>
+                        <td th:text="${staff.STAFF_MAILADDRESS}"></td>
+                        <td th:text="${staff.IT_TYPE}"></td>
+                        <td th:text="${staff.contractTypeName}"></td>
+                        <!--                        <td th:switch="${staff.contractType}">-->
+<!--                            <li th:case="0">個人事業主</li>-->
+<!--                            <li th:case="1">契約</li>-->
+<!--                            <li th:case="2">正社員</li>-->
+<!--                        </td>-->
+
+                    </tr>
+                    </tbody>
+
+                </table>
+                <br>
+                <div style="text-align: center;">
+                    <ul id="pagination" class="pagination"></ul>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+</body>
+
+</html>

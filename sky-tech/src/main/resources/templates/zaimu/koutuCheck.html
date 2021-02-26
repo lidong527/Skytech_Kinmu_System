@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8" />
+	<title>交通費提出チェック画面</title>
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<style>
+		body{
+			padding: 0;
+			margin: 0;
+		}
+		table {
+			border-collapse: collapse;
+			border-spacing: 100px 10px;
+			/* 水平间距 垂直间距 */
+			width: 80%;
+			max-width: 1000px;
+			table-layout: fixed;
+		}
+
+		table,
+		table tr td {
+			border: 2px solid #909090;
+		}
+
+		table tr td {
+			padding: 10px 30px;
+		}
+
+		.TransportationTitle {
+			text-align: center;
+		}
+
+		.ButtonClose {
+			width: 265px;
+			height: 30px;
+		}
+
+		.year {
+			font-size: 30px;
+			text-align: center;
+			background-color: #87CEFA;
+			-webkit-text-stroke: 1px white;
+			-webkit-text-fill-color: transparent;
+		}
+		.inputClass{
+			width: 100%;
+			height: 100%;
+			border-style: none;
+			outline: none;
+		}
+		.backtext{
+			background-color: transparent;
+		}
+		#grad {
+			height: 100px;
+			background-color: blue;
+			background-image: linear-gradient(to bottom, #87CEFA, white);
+		}
+		#inputID1{
+			border-style:none none solid none; 
+			background-color:transparent;
+			text-align:right;
+		}
+		#inputID2{
+			border-style:none none none none;
+			background-color:transparent;
+			text-align:center;
+		}
+		.buttondownload {
+			position: absolute;
+			text-align: center;
+			bottom: 140px;
+			font-size: 15px;
+			margin: 25px 0;
+			width: 300px;
+			height: 30px;
+			line-height: 10px;
+			border-radius: 5px;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+		.disableButton{
+
+			opacity:0.5;
+
+			pointer-events:none;
+
+		}
+	</style>
+	<script type="text/javascript">
+		function total(){
+			var opt1 = document.getElementById('Subtotal').value;
+			var opt2 = document.getElementById('Subtotal1').value;
+			var num = Number(opt1) + Number(opt2) ;
+			document.getElementById('total').value = num;
+		}
+		function usedTime() {
+			var used = document.getElementById('inputID1').value;
+			document.getElementById('downTime').value = used;
+		}
+		function getQueryString(name){
+			var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+			var r = window.location.search.substr(1).match(reg);
+			if(r!=null)return  unescape(r[2]); return null;
+		}
+		$(function () {
+			//alert(getQueryString("USER_MAIL"));
+			$('#M_FLG').val(getQueryString("mFlag"));
+			$('#SECRET_KEY').val(getQueryString("SECRET_KEY"));
+		})
+		window.onload = function () {
+
+			var alertStr = document.getElementById("msg").value;
+			if(alertStr == "承認成功"){
+				alert(alertStr);
+				window.close();
+			}
+		}
+	</script>
+</head>
+
+<body>
+
+<nav class="navbar navbar-default top-navbar" role="navigation">
+	<div class="navbar-header">
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</button>
+		<p class="navbar-brand"><strong>メニュー</strong></p>
+		<div id="sideNav" href="">
+			<i class="fa fa-bars icon"></i>
+		</div>
+	</div>
+</nav>
+<!--/. NAV TOP  -->
+<nav class="navbar-default navbar-side" role="navigation">
+	<div class="sidebar-collapse">
+		<ul class="nav" id="main-menu">
+			<li>
+				<a href="/koutuQueryList"><i class="fa fa-sitemap"></i> 社員交通費チェック</a>
+			</li>
+			<li>
+				<a href="/kinmuQueryList"><i class="fa fa-sitemap"></i> 社員勤務表チェック</a>
+			</li>
+			<li>
+				<a href="/tateQueryList"><i class="fa fa-sitemap"></i> 社員立替金チェック</a>
+			</li>
+			<li>
+				<a href="/addStaff"><i class="fa fa-sitemap"></i> 社員入職処理</a>
+			</li>
+			<li>
+				<a href="empty.html"><i class="fa fa-sitemap"></i> 社員退職処理</a>
+			</li>
+			<li>
+				<a href="/queryAllListBy"><i class="fa fa-sitemap"></i> 社員基本情報照会</a>
+			</li>
+			<li>
+				<a href="/listAll"><i class="fa fa-sitemap"></i> 人事確認画面</a>
+			</li>
+		</ul>
+	</div>
+</nav>
+	<div align="center">
+		<div class="year">
+			<h3>交通費提出</h3><br>
+		</div>
+		<form id="grad" method="post" th:object="${koutuList}" enctype="multipart/form-data">
+			<div>
+				<table>
+					<colgroup>
+						<col style="width:20%;">
+						<col style="width:30%;">
+						<col style="width:20%;">
+						<col style="width:30%;">
+					</colgroup>
+
+					<tr>
+						<td>ファイル：</td>
+						<td>
+						</td>
+						<td>小計:</td>
+						<td onfocusout="total()">
+							<input type="text" class="inputClass" id="Subtotal" name="usedMoneyEtc" th:value="*{usedMoneyEtc}">
+						</td>
+					</tr>
+
+					<tr class="TransportationTitle">
+						<td colspan="4"><input id="inputID1" style="width: 65px" type="text" name="usedTime" th:value="*{usedTime}" readonly>定期券</td>
+					</tr>
+					<tr>
+						<td>名前：</td>
+						<td><input type="text" class="inputClass backtext" readonly name="staffName" th:value="*{staffName}"></td>
+						<td>提出日：</td>
+						<td><input id="inputID2"  class="inputClass backtext" style="width:200px;" type="text" name="upTime" th:value="*{upTime}" readonly></td>
+					</tr>
+					<tr>
+						<td>出発：</td>
+						<td  ><input type="text" th:value="*{startSt}" class="inputClass"  name="startSt"></td>
+						<td>到着：</td>
+						<td ><input type="text" th:value="*{endSt}" class="inputClass"  name="endSt"></td>
+					</tr>
+					<tr>
+						<td colspan="2">小計：</td>
+						<td colspan="2" onfocusout="total()">
+							<input type="text" class="inputClass" id="Subtotal1" name="usedMoneyTsu" th:value="*{usedMoneyTsu}">
+						</td>
+					</tr>
+				</table>
+			</div><br>
+			<div>
+				<table>
+					<tr>
+						<td>合計：</td>
+						<td ><input type="text" id="total" th:value="*{usedMoneyAll}" name="usedMoneyAll" class="inputClass" ></td>
+					</tr>
+				</table>
+			</div><br>
+			<input type="hidden" th:value="*{staffBg}" name="staffBg">
+			<input type="hidden" id="msg" th:value="${msg}">
+			<div align="center">
+				<button class="ButtonClose" type="submit" th:class="*{buttonClass}" onclick="javascript:this.form.action='/koutuOK'">承認する</button>
+				<button class="ButtonClose" onclick="javascript:window.close()">×閉じる</button>
+			</div>
+			<input type="hidden" th:value="*{mFlag}" th:name="*{mFlag}" id="M_FLG">
+		</form>
+		<form enctype="multipart/form-data" action="/download" method="post">
+			<input type="hidden" th:value="${downType}" name="downType" />
+			<input type="hidden" th:value="${downTime}" name="downTime" />
+			<input type="hidden" th:value="${staffBg}" name="staffBg" />
+			<button id="download" type="submit" name="fileDownload" onclick="usedTime()" class="buttondownload" >交通費ファイルをダウンロードする</button>
+		</form>
+	</div>
+</body>
+
+</html>

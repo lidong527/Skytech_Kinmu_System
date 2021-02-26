@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta content="" name="description" />
+    <meta content="webthemez" name="author" />
+    <link href="/css/bootstrap.css" rel="stylesheet" />
+    <!-- FontAwesome Styles-->
+    <link href="/css/font-awesome.css" rel="stylesheet" />
+    <!-- Custom Styles-->
+    <link href="/css/custom-styles.css" rel="stylesheet" />
+    <!-- Google Fonts-->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="/js/jquery.twbsPagination.min.js"></script>
+    <title>交通費検索画面(社員)</title>
+    <script th:inline="javascript">
+        function getQueryString(name){
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if(r!=null)return  unescape(r[2]); return null;
+        }
+        function getVariety(val){
+            console.log(val);
+            if (val==0){
+                $(".currentMonth").css('display','none');
+                $(".lastMonth").removeAttr("style");
+            }else{
+                $(".lastMonth").css('display','none');
+                $(".currentMonth").removeAttr("style");
+            }
+        }
+
+
+        $(function(){
+
+            $("#btn_query").click(function () {
+                // if (searchMonth == 0){
+                //     $("#TM_KOUTU_STATUS").val("");
+                //     $("#TM_KINMU_STATUS").val("");
+                //     $("#TM_TATEKAE_STATUS").val("");
+                // }else{
+                //     $("#LM_KOUTU_STATUS").val("");
+                //     $("#LM_KINMU_STATUS").val("");
+                //     $("#LM_TATEKAE_STATUS").val("");
+                // }
+                var timeStarYear = $("#timeStarYear").val();
+                var timeEndYear = $("#timeEndYear").val();
+                var timeStarMonth = $("#timeStarMonth").val();
+                var timeEndMonth = $("#timeEndMonth").val();
+                if(eval(timeStarYear) == undefined || eval(timeStarYear) == '' || eval(timeEndYear) ==undefined || eval(timeEndYear) =='' || eval(timeStarMonth) ==undefined||eval(timeStarMonth)=='' ||eval(timeEndMonth)==undefined||eval(timeEndMonth)==''){
+                    $("#msg").text("すべての時間情報を入力してください");
+                    return false;
+                }else {
+                    if (eval(timeStarYear) == eval(timeEndYear)){
+                        if(eval(timeStarMonth) > eval(timeEndMonth)){
+                            $("#msg").text("開始時間は終了時間を超えることはできません");
+                            return false;
+                        }
+                    }else if(eval(timeStarYear) > eval(timeEndYear)){
+                        $("#msg").text("開始時間は終了時間を超えることはできません");
+                        return false;
+                    }else {
+                        $("#currentPage").val(1);
+                        $("#searchForm").submit();
+                    }
+                }
+            });
+
+            var p = [["${result.totalPage}"]];
+            var pageNum = [["${result.currentPage}"]];
+
+
+            $("#pagination").twbsPagination({
+
+
+                totalPages: p || 1,
+                startPage: pageNum || 1,
+                visiblePages:5,
+                first:"首页",
+                prev:"上页",
+                next:"下页",
+                last:"尾页",
+                initiateStartPageClick:false,
+                onPageClick:function(event,page){
+                    $("#currentPage").val(page);
+                    $("#searchForm").submit();
+                }
+            });
+        })
+
+    </script>
+
+    <style type="text/css">
+        .nav li.selected{
+            animation: tada 1s .2s ease both;
+            -moz-animation: tada 1s .2s ease both;
+            background-color: thistle;
+            color: #97a0b3;
+            font-size: 18px;
+        }
+        @keyframes tada{
+            0%{-webkit-transform:scale(1);}
+
+            10%, 20%{-webkit-transform:scale(0.9) rotate(-3deg);}
+
+            30%, 50%, 70%, 90%{-webkit-transform:scale(1.1) rotate(3deg);}
+
+            40%, 60%, 80%{-webkit-transform:scale(1.1) rotate(-3deg);}
+
+            100%{-webkit-transform:scale(1) rotate(0);}}
+
+        #grad {
+            height: 500px;
+            width: 100%;
+
+            background-color: blue;
+            background-image: linear-gradient(to bottom, thistle , black);
+        }
+        .main-wrap{
+            width: 1200px;
+            margin:0 auto;
+        }
+        .content-h{
+            width: 100%;
+            text-align: center;
+        }
+        .content-h .select{
+            height: 50px;
+        }
+        .content-h ul li{
+            float: left;
+            list-style-type: none;
+            margin-left:15px;
+        }
+        .content-c ul li{
+            float: right;
+            list-style-type: none;
+        }
+        .content-c{
+            width: 100%;
+        }
+        .c-kesaku{
+            width: 100%;
+            height: 50px;
+        }
+        .c-kesaku ul {
+            float: right;
+        }
+
+        .content-c img {
+            width: 25px;
+            margin:0 5px;
+        }
+        table{
+            width: 100%;
+            height: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        table th,td{
+            border: 1px solid black;
+            height: 30px;
+            line-height: 30px;
+        }
+        table th {
+            background-color: rgb(220, 233 , 248);
+            color: rgb(71, 76, 80);
+        }
+        .content-f{
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            margin-top: 30px;
+        }
+        .content-f ul{
+            width: 300px;
+            height: 50px;
+            margin: 0 auto;
+        }
+        .content-f ul li{
+            list-style-type: none;
+            float: left;
+            margin-left: 20px;
+        }
+
+        .syoninsumi{
+            color: #32CD32;
+        }
+        .teisyutsusumi{
+            color: #0000FF;
+        }
+        .miteisyutsu{
+            color: #FF0000;
+        }
+        .zanngyoujikann{
+            color:#FF0000;
+        }
+        .zanngyoujikann-a{
+            color:#FF0000;
+            font-weight: bold;
+            font-size: larger;
+        }
+    </style>
+    <th:block th:replace="common/link::common_header" />
+    <th:block th:replace="common/link::common_js" />
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+<!--<nav class="navbar navbar-default top-navbar" role="navigation">-->
+<!--    <div class="navbar-header">-->
+<!--        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">-->
+<!--            <span class="sr-only">Toggle navigation</span>-->
+<!--            <span class="icon-bar"></span>-->
+<!--            <span class="icon-bar"></span>-->
+<!--            <span class="icon-bar"></span>-->
+<!--        </button>-->
+<!--        <p class="navbar-brand" ><strong>メニュー</strong></p>-->
+<!--        <div id="sideNav" href="">-->
+<!--            <i class="fa fa-bars icon"></i>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</nav>-->
+<!--&lt;!&ndash;/. NAV TOP  &ndash;&gt;-->
+<!--<nav class="navbar-default navbar-side" role="navigation">-->
+<!--    <div class="sidebar-collapse">-->
+<!--        <ul class="nav" id="main-menu">-->
+<!--            <li>-->
+<!--                <a href="/kojin"><i class="fa fa-desktop"></i> 個人情報</a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                <a href="/koutu"><i class="fa fa-desktop"></i> 交通費提出</a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                <a href="/kinmu"><i class="fa fa-desktop"></i> 勤務表提出</a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                <a href="/tatekae"><i class="fa fa-desktop"></i> 立替金提出</a>-->
+<!--            </li>-->
+
+<!--            <li class="selected">-->
+<!--                <a href="/koutuQueryListByBg"><i class="fa fa-sitemap"></i> 交通費提出情報照会</a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                <a href="/kinmuQueryListByBg"><i class="fa fa-sitemap"></i> 勤務表提出情報照会</a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                <a href="/tateQueryListByBg"><i class="fa fa-sitemap"></i> 立替金提出情報照会</a>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--    </div>-->
+<!--</nav>-->
+<div id="wrapper">
+    <div th:replace="/common/staffMenu :: menuInfo" ></div>
+    <div class="content-wrapper" align="center">
+            <!--<div th:replace="../templates/common/navbar :: main"></div>-->
+            <div class="content-h">
+                <div style="font-family: cursive;">&nbsp;
+                    <h2>社員の交通費</h2>
+                </div>&nbsp;
+                <div id="grad">
+                    <form class="form-inline" id="searchForm" method="post"  enctype="multipart/form-data">
+                        <input type="hidden" name="currentPage" id="currentPage" >
+                        <div class="row">
+                            <ul>
+                                <li class="current-month">開始年:
+                                    <select class="form-control" name="timeStarYear" th:field="${qo.timeStarYear}" th:value="${qo.timeStarYear}" id="timeStarYear">
+                                        <option value="">開始年</option>
+                                        <option th:each="faultType:${timeYear}" th:value="*{faultType}" th:text="*{faultType}"></option>
+                                    </select>
+                                </li>
+                                <li class="current-month">開始月：
+                                    <select class="form-control" name="timeStarMonth" th:field="${qo.timeStarMonth}" th:value="${qo.timeStarMonth}" id="timeStarMonth" >
+                                        <option value="">開始月</option>
+                                        <option value="1" th:selected="${qo.timeStarMonth==1}">1月</option>
+                                        <option value="2" th:selected="${qo.timeStarMonth==2}">2月</option>
+                                        <option value="3" th:selected="${qo.timeStarMonth==3}">3月</option>
+                                        <option value="4" th:selected="${qo.timeStarMonth==4}">4月</option>
+                                        <option value="5" th:selected="${qo.timeStarMonth==5}">5月</option>
+                                        <option value="6" th:selected="${qo.timeStarMonth==6}">6月</option>
+                                        <option value="7" th:selected="${qo.timeStarMonth==7}">7月</option>
+                                        <option value="8" th:selected="${qo.timeStarMonth==8}">8月</option>
+                                        <option value="9" th:selected="${qo.timeStarMonth==9}">9月</option>
+                                        <option value="10" th:selected="${qo.timeStarMonth==10}">10月</option>
+                                        <option value="11" th:selected="${qo.timeStarMonth==11}">11月</option>
+                                        <option value="12" th:selected="${qo.timeStarMonth==12}">12月</option>
+                                    </select>
+                                </li>
+                                <li class="current-month">終了年:
+                                    <select class="form-control" name="timeEndYear" th:field="${qo.timeEndYear}" th:value="${qo.timeEndYear}" id="timeEndYear">
+                                        <option value="">終了年</option>
+                                        <option th:each="faultType:${timeYear}" th:value="*{faultType}" th:text="*{faultType}"></option>
+                                    </select>
+                                </li>
+                                <li class="current-month">終了月：
+                                    <select class="form-control" name="timeEndMonth" th:field="${qo.timeEndMonth}" th:value="${qo.timeEndMonth}"  id="timeEndMonth" >
+                                        <option value="">終了月</option>
+                                        <option value="1" th:selected="${qo.timeEndMonth==1}">1月</option>
+                                        <option value="2" th:selected="${qo.timeEndMonth==2}">2月</option>
+                                        <option value="3" th:selected="${qo.timeEndMonth==3}">3月</option>
+                                        <option value="4" th:selected="${qo.timeEndMonth==4}">4月</option>
+                                        <option value="5" th:selected="${qo.timeEndMonth==5}">5月</option>
+                                        <option value="6" th:selected="${qo.timeEndMonth==6}">6月</option>
+                                        <option value="7" th:selected="${qo.timeEndMonth==7}">7月</option>
+                                        <option value="8" th:selected="${qo.timeEndMonth==8}">8月</option>
+                                        <option value="9" th:selected="${qo.timeEndMonth==9}">9月</option>
+                                        <option value="10" th:selected="${qo.timeEndMonth==10}">10月</option>
+                                        <option value="11" th:selected="${qo.timeEndMonth==11}">11月</option>
+                                        <option value="12" th:selected="${qo.timeEndMonth==12}">12月</option>
+                                    </select>
+                                </li>
+
+                                <li>
+                                    <button id="btn_query" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span> 検索</button>
+                                    <span id="msg" style="color: red" ></span>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </form>
+
+                    <div class="content-c">
+                        <div>
+                            </br>
+                            <table>
+                                <colgroup>
+
+                                </colgroup>
+                                <thead>
+                                <tr>
+                                    <th >社員番号</th>
+                                    <th >名前</th>
+                                    <th >社員メールアドレス</th>
+                                    <th >始発駅</th>
+                                    <th >終点駅</th>
+                                    <th >利用時間</th>
+                                    <th >交通費</th>
+                                    <th >定期券</th>
+                                    <th >総金額</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <tr th:each="koutuQueryAll:${result.data}">
+                                    <td th:text="*{koutuQueryAll.STAFF_BG}"></td>
+                                    <td th:text="*{koutuQueryAll.STAFF_NAME}"></td>
+                                    <td th:text="*{koutuQueryAll.STAFF_MAILADDRESS}"></td>
+                                    <td th:text="*{koutuQueryAll.START_ST}"></td>
+                                    <td th:text="*{koutuQueryAll.END_ST}"></td>
+                                    <td th:text="${#dates.format(koutuQueryAll.USED_TIME,'yyyy-MM-dd')}"></td>
+                                    <td  th:text="*{koutuQueryAll.USED_MONEY_ETC}"></td>
+                                    <td th:text="*{koutuQueryAll.USED_MONEY_TSUKIN}"></td>
+                                    <td th:text="*{koutuQueryAll.USED_MONEY_ALL}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <div style="text-align: center;">
+                        <ul id="pagination" class="pagination"></ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>その他</title>
+    <link rel="stylesheet" href="/css/besides.css" />
+</head>
+<body>
+<form>
+    <form method="post">
+    <div class="main">
+        <h1 style="text-align: center">その他</h1>
+        <table>
+            <tr th:each="other:${OthersForm}">
+                <input type="submit" th:value="${other.buttonName}" th:onclick="${other.buttonURL}" class="sub" /></td>
+            </tr>
+            <tr>
+                <td><input type="button" value="お楽しみ" class="sub"/></td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="戻る" class="returnsub" onclick="javascript:this.form.action='/staff'"/></td>
+            </tr>
+        </table>
+    </div>
+    </form>
+</form>
+</body>
+</html>

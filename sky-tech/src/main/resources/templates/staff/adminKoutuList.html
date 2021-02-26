@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="common/link::common_header" />
+<!--    <link rel="stylesheet" th:href="@{/demo.css}" type="text/css" />-->
+    <th:block th:replace="common/link::common_js" />
+
+    <title>交通費チェック画面(財務)</title>
+    <script th:inline="javascript">
+        function getQueryString(name){
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if(r!=null)return  unescape(r[2]); return null;
+        }
+        function getVariety(val){
+            console.log(val);
+            if (val==0){
+                $(".currentMonth").css('display','none');
+                $(".lastMonth").removeAttr("style");
+            }else{
+                $(".lastMonth").css('display','none');
+                $(".currentMonth").removeAttr("style");
+            }
+        }
+
+
+        $(function(){
+            //菜单初始
+            $('.sidebar-menu').tree();
+            //菜单激活
+            var currentMenu = $("input[name='currentMenu']").val();
+
+            //菜单激活
+            var cuLi = $('.treeview-menu li[name="'+ currentMenu +'"]');
+            cuLi.addClass("active");
+            cuLi.closest(".treeview").addClass("active");
+
+            $("#btn_query").click(function () {
+                // if (searchMonth == 0){
+                //     $("#TM_KOUTU_STATUS").val("");
+                //     $("#TM_KINMU_STATUS").val("");
+                //     $("#TM_TATEKAE_STATUS").val("");
+                // }else{
+                //     $("#LM_KOUTU_STATUS").val("");
+                //     $("#LM_KINMU_STATUS").val("");
+                //     $("#LM_TATEKAE_STATUS").val("");
+                // }
+                var timeStarYear = $("#timeStarYear").val();
+                var timeEndYear = $("#timeEndYear").val();
+                var timeStarMonth = $("#timeStarMonth").val();
+                var timeEndMonth = $("#timeEndMonth").val();
+                if ((eval(timeStarYear) == eval(timeEndYear)) && eval(timeStarMonth)!= '' && eval(timeEndMonth)!=''){
+                    if(eval(timeStarMonth) > eval(timeEndMonth)){
+                        $("#msg").text("開始時間は終了時間を超えることはできません");
+                        return false;
+                    }
+                }else if((eval(timeStarYear) > eval(timeEndYear)) && eval(timeStarMonth)!= '' && eval(timeEndMonth)!=''){
+                    $("#msg").text("開始時間は終了時間を超えることはできません");
+                    return false;
+                }else if(!(eval(timeStarYear) != '' && eval(timeEndYear)!= '' && eval(timeStarMonth)!='' && eval(timeEndMonth)!='')  || !(eval(timeStarYear) == undefined && eval(timeEndYear)== undefined && eval(timeStarMonth)==undefined && eval(timeEndMonth)==undefined) ){
+                    $("#msg").text("すべての時間情報を入力してください");
+                    return false;
+                }else{
+                    var staffName = $("#STAFF_NAME").val();
+                    var staffbg = $("#STAFF_BG").val();
+                    var mail = $("#STAFF_MAILADDRESS").val();
+
+                    $("#STAFF_NAMEkeyword").val(trim(staffName));
+                    $("#STAFF_BG").val(trim(staffbg));
+                    $("#STAFF_MAILADDRESS").val(trim(mail));
+                    $("#currentPage").val(1);
+                    //$("#searchForm").submit();
+                }
+            });
+
+            var p = [[${result.totalPage}]];
+            var pageNum = [[${result.currentPage}]];
+
+
+            $("#pagination").twbsPagination({
+
+
+                totalPages: p || 1,
+                startPage: pageNum || 1,
+                visiblePages:5,
+                first:"首页",
+                prev:"上页",
+                next:"下页",
+                last:"尾页",
+                initiateStartPageClick:false,
+                onPageClick:function(event,page){
+                    $("#currentPage").val(page);
+                    $("#searchForm").submit();
+                }
+            });
+        })
+
+    </script>
+
+    <style type="text/css">
+        #grad {
+            height: 500px;
+            background-color: blue;
+            background-image: linear-gradient(to bottom, #87CEFA , white);
+        }
+        .main-wrap{
+            width: 1200px;
+            margin:0 auto;
+        }
+        .content-h{
+            width: 100%;
+            text-align: center;
+        }
+        .content-h .select{
+            height: 50px;
+        }
+        .content-h ul li{
+            float: left;
+            list-style-type: none;
+            margin-left:15px;
+        }
+        .content-c ul li{
+            float: right;
+            list-style-type: none;
+        }
+        .content-c{
+            width: 100%;
+        }
+        .c-kesaku{
+            width: 100%;
+            height: 50px;
+        }
+        .c-kesaku ul {
+            float: right;
+        }
+
+        .content-c img {
+            width: 25px;
+            margin:0 5px;
+        }
+        table{
+            width: 100%;
+            height: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        table th,td{
+            border: 1px solid black;
+            height: 30px;
+            line-height: 30px;
+        }
+        table th {
+            background-color: rgb(220, 233 , 248);
+            color: rgb(71, 76, 80);
+        }
+        .content-f{
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            margin-top: 30px;
+        }
+        .content-f ul{
+            width: 300px;
+            height: 50px;
+            margin: 0 auto;
+        }
+        .content-f ul li{
+            list-style-type: none;
+            float: left;
+            margin-left: 20px;
+        }
+
+        .syoninsumi{
+            color: #32CD32;
+        }
+        .teisyutsusumi{
+            color: #0000FF;
+        }
+        .miteisyutsu{
+            color: #FF0000;
+        }
+        .zanngyoujikann{
+            color:#FF0000;
+        }
+        .zanngyoujikann-a{
+            color:#FF0000;
+            font-weight: bold;
+            font-size: larger;
+        }
+    </style>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini" >
+<div id="wrapper">
+    <div th:replace="/common/menu :: menuInfo" ></div>
+    <input type="hidden" name="currentMenu" id="currentMenu" th:value="adminKoutuList">
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>社員の交通費</h1>
+        </section>
+        <section class="content">
+            <div class="box">
+        <form class="form-inline" id="searchForm" method="post"  enctype="multipart/form-data">
+
+            <input type="hidden" name="currentPage" id="currentPage" >
+            <br/>
+
+                        <div class="form-group">
+                            <label for="STAFF_NAME">社員名前:</label>
+                            <input type="text" class="form-control" id="STAFF_NAME" name="STAFF_NAME"
+                                   th:value="${qo.STAFF_NAME}" style="width: 160px;" >
+                        </div>
+                        <div class="form-group">
+                            <label for="STAFF_BG">社員番号:</label>
+                            <input type="text" class="form-control" id="STAFF_BG" name="STAFF_BG"
+                                   th:value="${qo.STAFF_BG}" style="width: 160px;">                        </div>
+                        <div class="form-group">
+                            <label for="STAFF_MAILADDRESS">メールアドレス:</label>
+                            <input type="text" class="form-control" id="STAFF_MAILADDRESS" name="STAFF_MAILADDRESS"
+                                   th:value="${qo.STAFF_MAILADDRESS}" style="width: 160px;">
+                        </div>
+            <br/>
+            <br/>
+
+            <div class="form-group current-month">開始年:
+                <select class="form-control" name="timeStarYear"  id="timeStarYear" th:field="${qo.timeStarYear}" th:value="${qo.timeStarYear}">
+                    <option value="">開始年</option>
+                    <option th:each="faultType:${timeYear}" th:value="*{faultType}" th:text="*{faultType}"></option>
+
+                </select>
+            </div>
+
+            <div class="form-group current-month">開始月：
+                <select class="form-control" name="timeStarMonth" th:field="${qo.timeStarMonth}" th:value="${qo.timeStarMonth}" id="timeStarMonth" >
+                    <option value="">開始月</option>
+                    <option value="1" th:selected="${qo.timeStarMonth==1}">1月</option>
+                    <option value="2" th:selected="${qo.timeStarMonth==2}">2月</option>
+                    <option value="3" th:selected="${qo.timeStarMonth==3}">3月</option>
+                    <option value="4" th:selected="${qo.timeStarMonth==4}">4月</option>
+                    <option value="5" th:selected="${qo.timeStarMonth==5}">5月</option>
+                    <option value="6" th:selected="${qo.timeStarMonth==6}">6月</option>
+                    <option value="7" th:selected="${qo.timeStarMonth==7}">7月</option>
+                    <option value="8" th:selected="${qo.timeStarMonth==8}">8月</option>
+                    <option value="9" th:selected="${qo.timeStarMonth==9}">9月</option>
+                    <option value="10" th:selected="${qo.timeStarMonth==10}">10月</option>
+                    <option value="11" th:selected="${qo.timeStarMonth==11}">11月</option>
+                    <option value="12" th:selected="${qo.timeStarMonth==12}">12月</option>
+                </select>
+            </div>
+            <div class="form-group current-month">開終了年:
+                <select class="form-control" name="timeEndYear" th:field="${qo.timeEndYear}" th:value="${qo.timeEndYear}" id="timeEndYear">
+                    <option value="">終了年</option>
+                    <option th:each="faultType:${timeYear}" th:value="*{faultType}" th:text="*{faultType}"></option>
+                </select>
+            </div>
+            <div class="form-group current-month">開終了月：
+                <select class="form-control" name="timeEndMonth" th:field="${qo.timeEndMonth}" th:value="${qo.timeEndMonth}"  id="timeEndMonth" >
+                    <option value="">終了月</option>
+                    <option value="1" th:selected="${qo.timeEndMonth==1}">1月</option>
+                    <option value="2" th:selected="${qo.timeEndMonth==2}">2月</option>
+                    <option value="3" th:selected="${qo.timeEndMonth==3}">3月</option>
+                    <option value="4" th:selected="${qo.timeEndMonth==4}">4月</option>
+                    <option value="5" th:selected="${qo.timeEndMonth==5}">5月</option>
+                    <option value="6" th:selected="${qo.timeEndMonth==6}">6月</option>
+                    <option value="7" th:selected="${qo.timeEndMonth==7}">7月</option>
+                    <option value="8" th:selected="${qo.timeEndMonth==8}">8月</option>
+                    <option value="9" th:selected="${qo.timeEndMonth==9}">9月</option>
+                    <option value="10" th:selected="${qo.timeEndMonth==10}">10月</option>
+                    <option value="11" th:selected="${qo.timeEndMonth==11}">11月</option>
+                    <option value="12" th:selected="${qo.timeEndMonth==12}">12月</option>
+                </select>
+            </div>
+
+
+                        <button id="btn_query" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span> 検索</button>
+            <span id="msg" style="color: red" ></span>
+        </form>
+                <br/>
+        <div class="content-c">
+            <div>
+                </br>
+                <table>
+
+                    <thead>
+                    <tr>
+                        <th >社員番号</th>
+                        <th >名前</th>
+                        <th >社員メールアドレス</th>
+                        <th >始発駅</th>
+                        <th >終点駅</th>
+                        <th >利用時間</th>
+                        <th >交通費</th>
+                        <th >定期券</th>
+                        <th >総金額</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr th:each="koutuQueryAll:${result.data}">
+                        <td th:text="*{koutuQueryAll.STAFF_BG}"></td>
+                        <td th:text="*{koutuQueryAll.STAFF_NAME}"></td>
+                        <td th:text="*{koutuQueryAll.STAFF_MAILADDRESS}"></td>
+                        <td th:text="*{koutuQueryAll.START_ST}"></td>
+                        <td th:text="*{koutuQueryAll.END_ST}"></td>
+                        <td th:text="${#dates.format(koutuQueryAll.USED_TIME,'yyyy-MM-dd')}"></td>
+                        <td  th:text="*{koutuQueryAll.USED_MONEY_ETC}"></td>
+                        <td th:text="*{koutuQueryAll.USED_MONEY_TSUKIN}"></td>
+                        <td th:text="*{koutuQueryAll.USED_MONEY_ALL}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br>
+
+        <div style="text-align: center;">
+            <ul id="pagination" class="pagination"></ul>
+        </div>
+
+
+    </div>
+        </section>
+</div>
+</div>
+</body>
+
+</html>

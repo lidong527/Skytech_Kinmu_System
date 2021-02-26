@@ -1,0 +1,2 @@
+//m_staff表增加契约类型字段 0个人事业组,1契约社员,2正社员
+alter table m_staff add CONTRACT_TYPE int not null after id;

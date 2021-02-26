@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta content="" name="description" />
+	<meta content="webthemez" name="author" />
+	<link href="/css/bootstrap.css" rel="stylesheet" />
+	<!-- FontAwesome Styles-->
+	<link href="/css/font-awesome.css" rel="stylesheet" />
+	<!-- Custom Styles-->
+	<link href="/css/custom-styles.css" rel="stylesheet" />
+	<!-- Google Fonts-->
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<title>交通費提出画面</title>
+
+	<style type="text/css">
+
+		.nav li.selected{
+			animation: tada 1s .2s ease both;
+			-moz-animation: tada 1s .2s ease both;
+			background-color: thistle;
+			color: #97a0b3;
+			font-size: 20px;
+		}
+		@keyframes tada{
+			0%{-webkit-transform:scale(1);}
+
+			10%, 20%{-webkit-transform:scale(0.9) rotate(-3deg);}
+
+			30%, 50%, 70%, 90%{-webkit-transform:scale(1.1) rotate(3deg);}
+
+			40%, 60%, 80%{-webkit-transform:scale(1.1) rotate(-3deg);}
+
+			100%{-webkit-transform:scale(1) rotate(0);}}
+
+		body{
+			padding: 0;
+			margin: 0;
+		}
+		table {
+			border-collapse: collapse;
+			border-spacing: 100px 10px;
+			/* 水平间距 垂直间距 */
+			width: 80%;
+			max-width: 1000px;
+			table-layout: fixed;
+		}
+
+		table,
+		table tr td {
+			border: 2px solid #909090;
+		}
+
+		table tr td {
+			padding: 10px 30px;
+		}
+
+		.TransportationTitle {
+			text-align: center;
+		}
+
+		.ButtonClose {
+			width: 265px;
+			height: 30px;
+		}
+
+
+		.inputClass{
+			width: 100%;
+			height: 100%;
+			border-style: none;
+			outline: none;
+		}
+		.backtext{
+			background-color: transparent;
+		}
+		#grad {
+			height: 500px;
+			background-image: linear-gradient(to bottom, thistle , black);
+		}
+		.year{
+			font-size: 30px;
+			text-align:center;
+			background-color: thistle;
+			-webkit-text-stroke: 1px thistle ;
+			-webkit-text-fill-color: transparent;
+		}
+
+		#inputID1{
+			border-style:none none solid none;
+			background-color:transparent;
+			text-align:right;
+		}
+		#inputID2{
+			border-style:none none none none;
+			background-color:transparent;
+			text-align:center;
+		}
+		.buttondownload {
+			position: absolute;
+			text-align: center;
+			bottom: 140px;
+			font-size: 15px;
+			margin: 25px 0;
+			width: 300px;
+			height: 30px;
+			line-height: 10px;
+			border-radius: 5px;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+	</style>
+	<script th:inline="javascript">
+		function total(){
+			var opt1 = document.getElementById('Subtotal').value;
+			var opt2 = document.getElementById('Subtotal1').value;
+			var num = Number(opt1) + Number(opt2) ;
+			document.getElementById('total').value = num;
+		}
+		function usedTime() {
+			var used = document.getElementById('inputID1').value;
+			document.getElementById('downTime').value = used;
+		}
+		function getQueryString(name){
+			var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+			var r = window.location.search.substr(1).match(reg);
+			if(r!=null)return  unescape(r[2]); return null;
+		}
+		$(function () {
+			//alert(getQueryString("USER_MAIL"));
+			$('#M_FLG').val(getQueryString("mFlag"));
+			$('#SECRET_KEY').val(getQueryString("SECRET_KEY"));
+
+			var fileName = [[${koutuList.fileName}]];
+			var staffBG = [[${koutuList.staffBg}]];
+			var url = "/downloadFile?downType=DOWN_TYPE_KOUTU&staffBG="+staffBG;
+			if (fileName != null && fileName != ''){
+				//alert("no upload file");
+				$("#downLoad").attr("href",url);
+			}else{
+				$("#downLoad").attr("disabled",true).css("pointer-events","none").css("color","#C0C0C0\t");;
+
+			}
+		})
+		//ajax读取Excel数据
+		//20201026 liuyang
+		$(document).ready(function(){
+			$("#upload").click(function () {
+				var file = new FormData($("#form_table")[0]);
+				$.ajax({
+					type:"POST",
+					url:"/readExcelKoutu",
+					data:file,
+					async:false,
+					cache:false,
+					contentType:false,
+					processData:false,
+					dataType:'json',
+					success: function(data){
+						//读取成功后修改数据
+						$("#Subtotal").val(data.usedMoneyEtc);
+						$("#Subtotal1").val(data.usedMoneyTsu);
+						$("#total").val(data.usedMoneyAll);
+						$("#msgErro").text("情報が読み込まれました");
+					},
+					error:function (status, e){
+						$("#msgErro").text("エラーが発生しました。もう一度お試して下さい！");
+					}
+				})
+			})
+		})
+		//获取这个月的第一天
+		function MonthFirst(){
+			var time=new Date();
+			var year=time.getFullYear();
+			var month=time.getMonth()+1;
+			if(month<10){
+				month="0"+month;
+			}
+			var v=year+'年'+month+'月';
+			return v;
+		}
+
+		window.onload = function () {
+			var timer = document.getElementById("inputID1");
+			timer.innerHTML = MonthFirst();
+		}
+	</script>
+	<th:block th:replace="common/link::common_header" />
+	<th:block th:replace="common/link::common_js" />
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<!--<nav class="navbar navbar-default top-navbar" role="navigation">-->
+<!--	<div class="navbar-header">-->
+<!--		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">-->
+<!--			<span class="sr-only">Toggle navigation</span>-->
+<!--			<span class="icon-bar"></span>-->
+<!--			<span class="icon-bar"></span>-->
+<!--			<span class="icon-bar"></span>-->
+<!--		</button>-->
+<!--		<p class="navbar-brand"> <strong>メニュー</strong></p>-->
+<!--		<div id="sideNav" href="">-->
+<!--			<i class="fa fa-bars icon"></i>-->
+<!--		</div>-->
+<!--	</div>-->
+<!--</nav>-->
+<!--&lt;!&ndash;/. NAV TOP  &ndash;&gt;-->
+<!--<nav class="navbar-default navbar-side" role="navigation">-->
+<!--	<div class="sidebar-collapse">-->
+<!--		<ul class="nav" id="main-menu">-->
+<!--			<li>-->
+<!--				<a href="/kojin"><i class="fa fa-desktop"></i> 個人情報</a>-->
+<!--			</li>-->
+<!--			<li class="selected">-->
+<!--				&lt;!&ndash; 交通费 &ndash;&gt;-->
+<!--				<a href="/koutu"><i class="fa fa-desktop"></i>-->
+<!--					<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"-->
+<!--						 width="30" height="30"-->
+<!--						 viewBox="0 0 172 172"><defs><linearGradient x1="129" y1="114.89063" x2="129" y2="126.78013" gradientUnits="userSpaceOnUse" id="color-1_52981_gr1"><stop offset="0" stop-color="#fcf3fd"></stop><stop offset="1" stop-color="#6edafc"></stop></linearGradient><linearGradient x1="53.75" y1="114.89063" x2="53.75" y2="126.78013" gradientUnits="userSpaceOnUse" id="color-2_52981_gr2"><stop offset="0" stop-color="#fcf3fd"></stop><stop offset="1" stop-color="#6edafc"></stop></linearGradient><linearGradient x1="127.38481" y1="64.05119" x2="127.38481" y2="86.83044" gradientUnits="userSpaceOnUse" id="color-3_52981_gr3"><stop offset="0" stop-color="#fcf3fd"></stop><stop offset="1" stop-color="#6edafc"></stop></linearGradient><linearGradient x1="86" y1="33.59375" x2="86" y2="140.72556" gradientUnits="userSpaceOnUse" id="color-4_52981_gr4"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="118.25" y1="33.59375" x2="118.25" y2="140.72556" gradientUnits="userSpaceOnUse" id="color-5_52981_gr5"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient></defs><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-size="none"  style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g><path d="M129,115.5625c-2.96853,0 -5.375,2.40647 -5.375,5.375c0,2.96853 2.40647,5.375 5.375,5.375c2.96853,0 5.375,-2.40647 5.375,-5.375c0,-2.96853 -2.40647,-5.375 -5.375,-5.375z" fill="url(#color-1_52981_gr1)"></path><path d="M53.75,115.5625c-2.96853,0 -5.375,2.40647 -5.375,5.375c0,2.96853 2.40647,5.375 5.375,5.375c2.96853,0 5.375,-2.40647 5.375,-5.375c0,-2.96853 -2.40647,-5.375 -5.375,-5.375z" fill="url(#color-2_52981_gr2)"></path><path d="M139.20175,86h-23.63925c-1.4835,0 -2.6875,-1.204 -2.6875,-2.6875v-16.125c0,-1.4835 1.204,-2.6875 2.6875,-2.6875h9.52988c0.774,0 1.51306,0.33325 2.02369,0.91644l14.10938,16.125c1.52113,1.73881 0.28487,4.45856 -2.02369,4.45856z" fill="url(#color-3_52981_gr3)"></path><path d="M158.5625,107.5v-14.91831c0,-3.14169 -1.10725,-6.20006 -3.11481,-8.60806l-21.156,-25.38344c-2.56119,-3.07719 -6.32906,-4.84019 -10.33075,-4.84019h-16.46094v-10.75c0,-4.44512 -3.61738,-8.0625 -8.0625,-8.0625h-69.875c-4.44513,0 -8.0625,3.61738 -8.0625,8.0625v8.0625h-13.4375v8.0625c0,7.40944 6.02806,13.4375 13.4375,13.4375v2.6875c0,4.44513 3.61737,8.0625 8.0625,8.0625h2.6875v2.6875c0,4.44512 3.61738,8.0625 8.0625,8.0625h21.5v5.375h5.375v-34.9375c0,-7.40944 -6.02806,-13.4375 -13.4375,-13.4375h-26.875v-8.0625c0,-1.4835 1.204,-2.6875 2.6875,-2.6875h69.875c1.4835,0 2.6875,1.204 2.6875,2.6875v53.75h-16.125v5.375h16.125v5.375h-21.5v5.375h21.5v5.375h-32.49187c-1.28731,-7.61369 -7.90663,-13.4375 -15.88313,-13.4375c-7.9765,0 -14.59581,5.82381 -15.88312,13.4375h-8.30437c-1.4835,0 -2.6875,-1.204 -2.6875,-2.6875v-26.875h-5.375v18.8125c-2.96431,0 -5.375,2.41069 -5.375,5.375v5.375c0,2.96431 2.41069,5.375 5.375,5.375h16.36688c1.28731,7.61369 7.90662,13.4375 15.88313,13.4375c7.9765,0 14.59581,-5.82381 15.88313,-13.4375h43.48375c1.28731,7.61369 7.90663,13.4375 15.88312,13.4375c7.9765,0 14.59581,-5.82381 15.88312,-13.4375h13.67938c2.96431,0 5.375,-2.41069 5.375,-5.375v-5.375c0,-2.96431 -2.41069,-5.375 -5.375,-5.375zM61.8125,64.5v24.1875h-21.5c-1.4835,0 -2.6875,-1.204 -2.6875,-2.6875v-2.6875h13.4375v-5.375h-21.5c-1.4835,0 -2.6875,-1.204 -2.6875,-2.6875v-2.6875h13.4375v-5.375h-18.8125c-4.44513,0 -8.0625,-3.61738 -8.0625,-8.0625v-2.6875h40.3125c4.44512,0 8.0625,3.61738 8.0625,8.0625zM53.75,131.6875c-5.92862,0 -10.75,-4.82137 -10.75,-10.75c0,-5.92863 4.82138,-10.75 10.75,-10.75c5.92862,0 10.75,4.82137 10.75,10.75c0,5.92863 -4.82138,10.75 -10.75,10.75zM129,131.6875c-5.92863,0 -10.75,-4.82137 -10.75,-10.75c0,-5.92863 4.82137,-10.75 10.75,-10.75c5.92863,0 10.75,4.82137 10.75,10.75c0,5.92863 -4.82137,10.75 -10.75,10.75zM147.8125,118.25h-2.92938c-1.28731,-7.61369 -7.90662,-13.4375 -15.88312,-13.4375c-7.9765,0 -14.59581,5.82381 -15.88312,13.4375h-5.61688v-59.125h16.46094c2.40263,0 4.66012,1.05887 6.20006,2.90519l21.15869,25.38613c1.204,1.44587 1.86781,3.28144 1.86781,5.16537v20.29331v2.6875c0,1.4835 -1.204,2.6875 -2.6875,2.6875z" fill="url(#color-4_52981_gr4)"></path><path d="M112.875,91.375h10.75v5.375h-10.75z" fill="url(#color-5_52981_gr5)"></path></g></g></svg>-->
+<!--					交通費提出</a>-->
+<!--			</li>-->
+<!--			<li>-->
+<!--				<a href="/kinmu"><i class="fa fa-desktop"></i> 勤務表提出</a>-->
+<!--			</li>-->
+<!--			<li>-->
+<!--				<a href="/tatekae"><i class="fa fa-desktop"></i> 立替金提出</a>-->
+<!--			</li>-->
+
+<!--			<li>-->
+<!--				<a href="/koutuQueryListByBg"><i class="fa fa-sitemap"></i> 交通費提出情報照会</a>-->
+<!--			</li>-->
+<!--			<li>-->
+<!--				<a href="/kinmuQueryListByBg"><i class="fa fa-sitemap"></i> 勤務表提出情報照会</a>-->
+<!--			</li>-->
+<!--			<li>-->
+<!--				<a href="/tateQueryListByBg"><i class="fa fa-sitemap"></i> 立替金提出情報照会</a>-->
+<!--			</li>-->
+<!--		</ul>-->
+<!--	</div>-->
+<!--</nav>-->
+<!-- /. NAV SIDE  -->
+<div id="wrapper" th:style="'background:url(' +@{/picture/98k.jpeg} + ')'" >
+	<div th:replace="/common/staffMenu :: menuInfo" ></div>
+
+	<div class="content-wrapper" align="center">
+		<div class="panel-heading" style="font-family: cursive;">
+			<h2>交通費提出</h2> <br>
+		</div>
+		<div id="grad" class="panel-body">
+			<form  id="form_table" method="post" th:object="${koutuList}" enctype="multipart/form-data">
+				<div>
+					<table>
+						<colgroup>
+							<col style="width:20%;">
+							<col style="width:30%;">
+							<col style="width:20%;">
+							<col style="width:30%;">
+						</colgroup>
+
+						<tr>
+							<td>ファイル：</td>
+
+							<td>
+								<input type="file"  id="file" name="fileUpload">
+								<button id="upload" type="button">upload</button>
+							</td>
+							<td>小計:</td>
+							<td onfocusout="total()">
+								<input type="text" class="inputClass " id="Subtotal" name="usedMoneyEtc" th:value="*{usedMoneyEtc}">
+							</td>
+						</tr>
+
+						<tr class="TransportationTitle">
+							<td colspan="4"><SPAN id="inputID1" style="width: 65px" type="text" readonly></SPAN>定期券</td>
+						</tr>
+						<tr>
+							<td>名前：</td>
+							<td><input type="text" class="inputClass backtext" readonly name="staffName" th:value="*{staffName}"></td>
+							<td>提出日：</td>
+							<td><input id="inputID" class="inputClass backtext"  style="width:200px;" type="text" name="upTime" th:value="*{upTime}" readonly></td>
+						</tr>
+						<tr>
+							<td>出発：</td>
+							<td  ><input type="text" th:value="*{startSt}" class="inputClass"  name="startSt"></td>
+							<td>到着：</td>
+							<td ><input type="text" th:value="*{endSt}" class="inputClass"  name="endSt"></td>
+						</tr>
+						<tr>
+							<td colspan="2">小計：</td>
+							<td colspan="2" onfocusout="total()">
+								<input type="text" class="inputClass" id="Subtotal1" name="usedMoneyTsu" th:value="*{usedMoneyTsu}">
+							</td>
+						</tr>
+					</table>
+				</div><br>
+				<div>
+					<table>
+						<tr>
+							<td>合計：</td>
+							<td ><input type="text" id="total" th:value="*{usedMoneyAll}" name="usedMoneyAll" class="inputClass" ></td>
+						</tr>
+						<tr>
+							<td align="left" name="upfile">文件下载</td>
+							<td align="left" >
+								<a id="downLoad">
+									<span class="glyphicon glyphicon-download-alt"></span> コミットしたファイルをダウンロードします
+								</a>
+							</td>
+						</tr>
+						<tr>
+							<td align="left" name="upfile">模板下载</td>
+							<td align="left" >
+								<a href="/通勤雑費表.xls" class="btn btn-success">
+									<span class="glyphicon glyphicon-download-alt"></span>ダウンロード
+								</a>
+							</td>
+						</tr>
+					</table>
+				</div><br>
+				<input type="hidden" th:value="*{staffBg}" th:name="staffBg">
+				<div align="center">
+					<button class="btn btn-primary ButtonClose" type="submit" onclick="javascript:this.form.action='/koutuInsert'">保存</button>
+					<button class="btn btn-info ButtonClose" onclick="javascript:this.form.action='/backStatus'">×閉じる</button>
+				</div>
+				<div><p></p></div>
+				<input type="hidden" th:value="*{mFlag}" th:name="*{mFlag}" id="M_FLG">
+			</form>
+			<!--		<form enctype="multipart/form-data" action="/download" method="post">-->
+			<!--			<input type="hidden" th:value="${downType}" name="downType" />-->
+			<!--			<input type="hidden" th:value="${downTime}" name="downTime" />-->
+			<!--			<button id="download" type="submit" name="fileDownload" onclick="usedTime()" class="buttondownload" >交通費ファイルをダウンロードする</button>-->
+			<!--		</form>-->
+		</div>
+	</div>
+</div>
+</div>
+</body>
+
+</html>

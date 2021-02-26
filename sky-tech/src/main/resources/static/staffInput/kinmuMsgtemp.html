@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"  />
+    <link rel='stylesheet' type='text/css' href="../static/kinmu.css"/>
+    <title>業務報告書</title>
+    <script type="text/javascript">
+        function current() {
+            var d = new Date(),
+                str = '';
+            str += d.getFullYear() + '年'; //当前年份
+            str += d.getMonth() + 1 + '月' + '作業報告書'; //当前月份（0——11）
+            return str;
+        }
+
+        window.onload = function () {
+            var timer = document.getElementById("timer");
+            timer.innerHTML = current();}
+
+        if($("input[name='search_result']").val() != null){
+            alert("勤務表提出しました！");
+        }
+
+        function check() {
+            if (document.update.company.value == "") {
+                alert("会社名を入力してください!");
+                document.update.company.focus();
+                return false;
+            } else if (document.update.name.value == "") {
+                alert("作業社名を入力してください!");
+                document.update.name.focus();
+                return false;
+            } else if (document.update.startTime.value == "") {
+                alert("期間を入力してください!");
+                document.update.startTime.focus();
+                return false;
+            } else if (document.update.endTime.value == "") {
+                alert("期間を入力してください!");
+                document.update.endTime.focus();
+                return false;
+            } else if (document.update.nitilist.value == "nitilist.ichi") {
+                alert("出勤日数を選択してください!");
+                document.update.nitilist.focus();
+                return false;
+            } else if (document.update.kado.value == "") {
+                alert("稼働時間を入力してください!");
+                script.src = "templates/laydate.dev.js";
+                document.update.kado.focus();
+                return false;
+            } else if (document.update.upload.value == "") {
+                alert("文件を選択してください!");
+                document.update.upload.focus();
+                return false;
+            }else
+                return true;
+        }
+        function getQueryString(name){
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if(r!=null)return  unescape(r[2]); return null;
+        }
+        $(function () {
+            //alert(getQueryString("USER_MAIL"));
+            $('#M_FLG').val(getQueryString("M_FLG"));
+        })
+    </script>
+</head>
+<body>
+<div class="year">
+    <h3 id="timer">業務報告書</h3>
+</div>
+<div align="left" id="grad">
+    <table>
+        <tr>
+            <td class="column" colspan="7" align="left">下記の期間の業務状況について、御報告いたします。</td>
+        </tr>
+        <tr>
+            <td colspan="7" width="80%"></td>
+        </tr>
+    </table>
+    <form name="update" action="kinmuSave.html" th:action="@{/kinmu}" th:object="${kinmu}" method="post" onsubmit="return check()">
+        <table cellspacing="0" width="30%">
+            <tr >
+                <td class="td" >会社名</td>
+                <td colspan="3"><input type="text" th:field="*{company}" class="text-input" name="company" id="company"/></td>
+            </tr>
+            <tr>
+                <td class="td" >作業者名</td>
+                <td colspan="3"><input type="text" th:field="*{staffName}" class="text-input" name="name"/></td>
+            </tr>
+            <tr>
+                <td class="td" >作業期間</td>
+                <td colspan="3"><input type="date" th:field="*{startTime}" class="text-time" placeholder="2020/01/31" name="startTime"
+                                       max="2099-12-31" min="1900-01-01" />&nbsp;&nbsp;~&nbsp;&nbsp;
+                    <input type="date"
+                           th:field="*{endTime}" class="text-time" placeholder="2020/01/31" name="endTime" max="2099-12-31" min="1900-01-01" />
+                </td>
+            </tr>
+            <tr>
+                <td class="td">基準期間</td>
+                <td colspan="3"><input type="text" th:field="*{basicTime}" class="text-time" name="basicTime" />
+                </td>
+            </tr>
+            <tr>
+                <td class="td">精算期間</td>
+                <td colspan="3"><input type="text" th:field="*{saisenTime}" class="text-time" name="seisanTime" />
+                </td>
+            </tr>
+            <tr>
+                <td class="td">出勤日数</td>
+                <td colspan="3">
+                    <select name="days">
+                        <option value="ichi">1</option>
+                        <option value="ni">2</option>
+                        <option value="san">3</option>
+                        <option value="si">4</option>
+                        <option value="go">5</option>
+                        <option value="roku">6</option>
+                        <option value="sichi">7</option>
+                        <option value="hathi">8</option>
+                        <option value="kyu">9</option>
+                        <option value="jyu">10</option>
+                        <option value="jyuichi">11</option>
+                        <option value="jyuni">12</option>
+                        <option value="jyusan">13</option>
+                        <option value="jyuyon">14</option>
+                        <option value="jyugo">15</option>
+                        <option value="jyuroku">16</option>
+                        <option value="jyusichi">17</option>
+                        <option value="jyuhati">18</option>
+                        <option value="jyukyu">19</option>
+                        <option value="nijyu">20</option>
+                        <option value="nijyuichi">21</option>
+                        <option value="nijyuni">22</option>
+                        <option value="nijyusan">23</option>
+                        <option value="nijyuyon">24</option>
+                        <option value="nijyugo">25</option>
+                        <option value="nijyuroku">26</option>
+                        <option value="nijyusichi">27</option>
+                        <option value="nijuhachi">28</option>
+                        <option value="nijyukyu">29</option>
+                        <option value="sanjyu">30</option>
+                        <option value="sanjyuichi">31</option>
+                    </select>日
+                </td>
+            </tr>
+            <tr>
+                <td class="td">稼働時間</td>
+                <td colspan="3"><input type="text"  th:field="*{kadoTime}" class="text-time" name="kado" />時間
+                </td>
+            </tr>
+            <tr>
+                <td align="left" name="upfile">文件提出</td>
+                <td align="left">
+                    <form id="upload-form" method="post" enctype="multipart/form-data">
+                        <input type="file" id="upload" name="fileName"/><br/>
+                        <input type="submit" value="Upload" οnclick="UpladFile()" action="kinmuSave"/>
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">提出済</td>
+                <td><input type="button" id="dowloadBtn"  value="ダウンロード" name="search_result" th:action="search_result"/></td>
+            </tr>
+            <input type="hidden" th:value="" th:name="" id="M_FLG"/>
+        </table>
+    </form>
+    <br/>
+    <br/>
+    <br/>
+    <div align="center">
+        <button class="button button2" type="submit" onclick="javascript:this.form.action='/kinmuSave'">保存</button>
+        <button class="button button5" type="reset" >取消</button>
+    </div>
+</div>
+</body>
+</html>

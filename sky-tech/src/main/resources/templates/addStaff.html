@@ -1,0 +1,226 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta content="" name="description" />
+    <meta content="webthemez" name="author" />
+    <!-- Bootstrap Styles-->
+    <link href="/css/bootstrap.css" rel="stylesheet" />
+    <!-- FontAwesome Styles-->
+    <link href="/css/font-awesome.css" rel="stylesheet" />
+    <!-- Custom Styles-->
+    <link href="/css/custom-styles.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.css" th:href="@{/css/font-awesome.css}"/>
+
+    <!--    <link rel="stylesheet" href="css/base.css">-->
+    <!--    <link rel="stylesheet" href="css/staffStatus.css">-->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <!--    <script src="js/staffStatus.js"></script>-->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="/js/jquery.twbsPagination.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.twbsPagination.min.js" th:src="@{/js/jquery.twbsPagination.min.js}"></script>
+
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>社員管理</title>
+    <style type="text/css">
+        #grad {
+            height: 100%;
+            width: 100%;
+            background-color: blue;
+            background-image: linear-gradient(to bottom, #87CEFA , white);
+        }
+
+        .year{
+            height: 60px;
+            font-size: 30px;
+            text-align:center;
+            background-color: #87CEFA;
+        }
+    </style>
+</head>
+<script>
+    $("#saveuddd").click(function(){
+    var saveDataAry=[];
+    //var data = ;
+    for (var i = 0; i < 10; i++) {
+     //   var data+i = ;
+        saveDataAry.push(data + i);
+    };
+
+    var data1={"name":"test","password":"gz"};
+    var data2={"name":"ququ","password":"gr"};
+    saveDataAry.push(data1);
+    saveDataAry.push(data2);
+    var id = '12345';
+    $.ajax({
+        type:"POST",
+        url: basePath + "/user/saveUser/" + id,
+        dataType:"json",
+        contentType:"application/json",
+        data:JSON.stringify(saveDataAry),
+        success:function(data){}
+    });
+})
+</script>
+<body>
+
+<nav class="navbar navbar-default top-navbar" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <p class="navbar-brand"><strong>メニュー</strong></p>
+        <div id="sideNav" href="">
+            <i class="fa fa-bars icon"></i>
+        </div>
+    </div>
+</nav>
+<!--/. NAV TOP  -->
+<nav class="navbar-default navbar-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav" id="main-menu">
+            <li>
+                <a href="/koutuQueryList"><i class="fa fa-sitemap"></i> 社員交通費チェック</a>
+            </li>
+            <li>
+                <a href="/kinmuQueryList"><i class="fa fa-sitemap"></i> 社員勤務表チェック</a>
+            </li>
+            <li>
+                <a href="/tateQueryList"><i class="fa fa-sitemap"></i> 社員立替金チェック</a>
+            </li>
+            <li>
+                <a href="empty.html"><i class="fa fa-sitemap"></i> 社員入職処理</a>
+            </li>
+            <li>
+                <a href="empty.html"><i class="fa fa-sitemap"></i> 社員退職処理</a>
+            </li>
+            <li>
+                <a href="/queryAllListBy"><i class="fa fa-sitemap"></i> 社員基本情報照会</a>
+            </li>
+            <li>
+                <a href="/listAll"><i class="fa fa-sitemap"></i> 人事確認画面</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div id="page-wrapper" ></br>
+    <div align="center" class="year">
+    <h3>社員管理</h3></br>
+   </div>
+<div align="center" id="grad">
+    <div><span th:text="${msg}"></span></div>
+    <form name="addForm" th:object="${}" method="post" enctype="multipart/form-data">
+    <table cellspacing="0" height="50%" width="50%" boder="1" >
+            <thead>
+            <tr>
+                <th>社員番号</th>
+                <th>メールアドレス</th>
+                <th>権限</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><input type="text"  name="staffBg" min="0" maxlength="10" /></td>
+                <td><input type="email"  name="mailAddress" /></td>
+                <td width="70px" class="td"　class="td" >
+                    <input type="text"  name="permission" width="70px" />
+                </td>
+            </tr>
+            <tr>
+                <td><input type="text"  name="staffBg" min="0" maxlength="10" /></td>
+                <td><input type="email"  name="mailAddress" /></td>
+                <td width="70px" class="td"　class="td" >
+                    <input type="text"  name="permission" width="70px" />
+                </td>
+            </tr>
+            <tr>
+                <td><input type="text"  name="staffBg" min="0" maxlength="10" /></td>
+                <td><input type="email"  name="mailAddress" /></td>
+                <td width="70px" class="td"　class="td" >
+                    <input type="text"  name="permission" width="70px" />
+                </td>
+            </tr>
+            <tr>
+                <td><input type="text"  name="staffBg" min="0" maxlength="10" /></td>
+                <td><input type="email"  name="mailAddress" /></td>
+                <td width="70px" class="td"　class="td" >
+                    <input type="text"  name="permission" width="70px" />
+                </td>
+            </tr>
+            <tr>
+                <td><input type="text"  name="staffBg" min="0" maxlength="10" /></td>
+                <td><input type="email"  name="mailAddress" /></td>
+                <td width="70px" class="td"　class="td" >
+                    <input type="text"  name="permission" width="70px" />
+                </td>
+            </tr>
+            <tr>
+                <td><input type="text"  name="staffBg" min="0" maxlength="10" /></td>
+                <td><input type="email"  name="mailAddress" /></td>
+                <td width="70px" class="td"　class="td" >
+                    <input type="text"  name="permission" width="70px" />
+                </td>
+            </tr>
+            <tr>
+                <td><input type="text"  name="staffBg" min="0" maxlength="10" /></td>
+                <td><input type="email"  name="mailAddress" /></td>
+                <td width="70px" class="td"　class="td" >
+                    <input type="text"  name="permission" width="70px" />
+                </td>
+            </tr>
+            <tr>
+                <td><input type="text"  name="staffBg" min="0" maxlength="10" /></td>
+                <td><input type="email"  name="mailAddress" /></td>
+                <td width="70px" class="td"　class="td" >
+                    <input type="text"  name="permission" width="70px" />
+                </td>
+            </tr>
+            <tr>
+                <td><input type="text"  name="staffBg" min="0" maxlength="10" /></td>
+                <td><input type="email"  name="mailAddress" /></td>
+                <td width="70px" class="td"　class="td" >
+                    <input type="text"  name="permission" width="70px" />
+                </td>
+            </tr>
+            <tr>
+                <td><input type="text"  name="staffBg" min="0" maxlength="10" /></td>
+                <td><input type="email"  name="mailAddress" /></td>
+                <td width="70px" class="td"　class="td" >
+                    <input type="text"  name="permission" width="70px" />
+                </td>
+            </tr>
+            <tr>
+                <td><input type="text"  name="staffBg" min="0" maxlength="10" /></td>
+                <td><input type="email"  name="mailAddress" /></td>
+                <td width="70px" class="td"　class="td" >
+                    <input type="text"  name="permission" width="70px" />
+                </td>
+            </tr>
+            <tr>
+                <td><input type="text"  name="staffBg" min="0" maxlength="10" /></td>
+                <td><input type="email"  name="mailAddress" /></td>
+                <td width="70px" class="td"　class="td" >
+                    <input type="text"  name="permission" width="70px" />
+                </td>
+            </tr>
+            <tr>
+
+            </tr>
+            </tbody>
+        </table>
+        <div align="center">
+            <button id="sub" class="button button2">一括追加</button>
+            <button id="back" class="button button5">戻る</button>
+        </div>
+    </form>
+</div>
+</div>
+</div>
+</body>
+</html>

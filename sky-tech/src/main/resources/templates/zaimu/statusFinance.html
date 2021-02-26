@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta content="" name="description" />
+    <meta content="webthemez" name="author" />
+    <title>詳細状況画面</title>
+    <link href="/css/bootstrap.css" rel="stylesheet" />
+    <!-- FontAwesome Styles-->
+    <link href="/css/font-awesome.css" rel="stylesheet" />
+    <!-- Custom Styles-->
+    <link href="/css/custom-styles.css" rel="stylesheet" />
+    <!-- Google Fonts-->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <style type="text/css">
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 2px;
+            -webkit-transition-duration: 0.4s;
+            transition-duration: 0.4s;
+            cursor: pointer;
+        }
+
+        .button2 {
+            background-color: white;
+            color: black;
+            border: 2px solid #87CEFA;
+        }
+
+        .button2:hover {
+            background-color: #87CEFA;
+            color: white;
+        }
+
+        .button5 {
+            background-color: black;
+            color: white;
+            border: 2px solid #555555;
+        }
+
+        .leftbox {
+            width: 50%;
+            height: 400px;
+            background-color: #aadddd;
+            float: left;
+        }
+        .rightbox {
+            width: 50%;
+            height: 400px;
+            background-color: #f08844;
+            float: right;
+        }
+
+        .td{
+            font-size: 20px;
+            text-align:center;
+        }
+
+        .people{
+            font-size: 15px;
+            text-align: right;
+        }
+        .subButton{
+            background-color: #adff2f;
+            text-align: center;
+            height: 200px;
+        }
+        .sub{
+            margin-top : 10px;
+            margin-bottom : 10px;
+            font-size: 15px;
+        }
+    </style>
+    <script th:inline="javascript">
+        $(function () {
+
+            $(".buton").click(function () {
+                var btn = $(this).attr("class").split(' ')[1];
+                console.log(btn);
+                var month;
+                var statusName = $(this).attr("name");
+                if (statusName.indexOf("lm") != -1){
+                    month=0;}else{
+                    month=1;
+                }
+                $("input[name='month']").attr("value",month);
+                var status = $(this).val();
+                // console.lo($("#status"));
+                $("input[name='status']").attr("value",status);
+                $("input[name='statusName']").attr("value",statusName);
+                $("#inputx").attr("name",statusName).attr("value",status)
+                //$("input[name=statusName]").attr("value",status);
+                if (btn == "button3"){
+                    $("input[name='IT_TYPE']").val("SAP")
+                }
+                if (btn == "button2"){
+                    $("input[name='IT_TYPE']").val("JAVA")
+                }
+                $("#searchForm").attr("action","listAll");
+                $("#searchForm").submit();
+
+            })
+            window.onload = function () {
+                var showinfo = document.getElementById('viewType');
+                var viewJava = document.getElementById('JAVA');
+                var viewSap = document.getElementById('SAP');
+                if (showinfo.value =="JAVA" ){
+                    viewJava.style.visibility = 'visible';
+                    viewSap.style.visibility = 'hidden';
+                    viewJava.style.float = 'none';
+                    viewJava.style.width = '100%';
+                }
+                if(showinfo.value == "SAP"){
+                    viewJava.style.visibility = 'hidden';
+                    viewSap.style.visibility = 'visible';
+                    viewSap.style.float = 'none';
+                    viewSap.style.width = '100%';
+                }
+            }
+        })
+
+    </script>
+</head>
+<body>
+
+<nav class="navbar navbar-default top-navbar" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <p class="navbar-brand"><strong>メニュー</strong></p>
+        <div id="sideNav" href="">
+            <i class="fa fa-bars icon"></i>
+        </div>
+    </div>
+</nav>
+<!--/. NAV TOP  -->
+<nav class="navbar-default navbar-side" role="navigation">
+    <div class="sidebar-collapse">
+        <nav class="navbar-default navbar-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
+                    <li>
+                        <a href="/staff"><i class="fa fa-sitemap"></i> 詳細状況画面</a>
+                    </li>
+                    <li>
+                        <a href="/koutuQueryList"><i class="fa fa-sitemap"></i> 社員交通費チェック</a>
+                    </li>
+                    <li>
+                        <a href="/kinmuQueryList"><i class="fa fa-sitemap"></i> 社員勤務表チェック</a>
+                    </li>
+                    <li>
+                        <a href="/tateQueryList"><i class="fa fa-sitemap"></i> 社員立替金チェック</a>
+                    </li>
+                    <li>
+                        <a href="/addStaff"><i class="fa fa-sitemap"></i> 社員入職処理</a>
+                    </li>
+                    <li>
+                        <a href="empty.html"><i class="fa fa-sitemap"></i> 社員退職処理</a>
+                    </li>
+                    <li>
+                        <a href="/queryAllListBy"><i class="fa fa-sitemap"></i> 社員基本情報照会</a>
+                    </li>
+                    <li>
+                        <a href="/listAll"><i class="fa fa-sitemap"></i> 人事確認画面</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</nav>
+<div id="page-wrapper">&nbsp;
+<div  align="center">&nbsp;
+    <div><h2>詳細状況画面</h2></div>&nbsp;
+    <form  id="searchForm" action="" method="post" name="java">
+        <input type="hidden" name = "viewType" th:value="${viewType}" id="viewType">
+        <div class="leftbox" align="center" id="JAVA">&nbsp;
+            <input  name="status" type="hidden"/>
+            <input  name="month" type="hidden"/>
+            <input name="statusName" type="hidden"/>
+            <input name="IT_TYPE" type="hidden" value="JAVA"/>
+            <input id="inputx" name="" type="hidden" value=""/>
+            <table>
+                <tr>
+                    <tr align="center" ><label><h2>オーペン系</h2></label></tr>
+                </tr>
+                <tr>
+                    <td rowspan="2" class="td">交通費</td>
+                    <td style="text-align:right">提出人数:</td>
+                    <td  style="text-align:right" th:text="${map['tmKoutuStatusCommit']}"></td>
+                    <td>
+                        <button type="button" class="buton button2" name="TM_KOUTU_STATUS" value="1">詳細を見る</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right"> 未提出人数:</td>
+                    <td  style="text-align:right; color:red" th:text="${map['tmKoutuStatus']}"></td>
+                    <td>
+                        <button type="button" class="buton button2" name="TM_KOUTU_STATUS" value="0">詳細を見る</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan="2" class="td">勤務表</td>
+                    <td style="text-align:right">提出人数:</td>
+                    <td style="text-align:right" th:text="${map['tmKinmuStatusCommit']}"></td>
+                    <td>
+                        <button type="button" class="buton button2" name="TM_KINMU_STATUS" value="1">詳細を見る</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right">未提出人数:</td>
+                    <td style="text-align:right" th:text="${map['tmKinmuStatus']}"></td>
+                    <td>
+                        <button type="button" class="buton button2" name="TM_KOUTU_STATUS" value="0">詳細を見る</button>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="td">立替金明細書</td>
+
+                    <td style="text-align:right">提出人数:</td>
+                    <td style="text-align:right" th:text="${map['tmTatekaeStatusCommit']}"></td>
+                    <td>
+                        <button type="button" class="buton button2" name="TM_TATEKAE_STATUS" value="1">詳細を見る</button>
+                    </td>
+                </tr>
+            </table>
+
+            <br/><br/>
+        </div>
+        <div class="rightbox" align="center" id="SAP">&nbsp;
+            <table>
+                <tr>
+                    <tr align="center"><label><h2>SAP部</h2></label></tr>
+                </tr>
+                <tr>
+                    <td rowspan="2" class="td">交通費</td>
+                    <td style="text-align:right">提出人数:</td>
+                    <td style="text-align:right" th:text="${map1['tmKoutuStatusCommit']}"></td>
+                    <td>
+                        <button type="button" class="buton button2" name="TM_KOUTU_STATUS" value="1">詳細を見る</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right">未提出人数</td>
+                    <td style="text-align:right;color:red"th:text="${map1['tmKoutuStatus']}"></td>
+                    <td>
+                        <button type="button" class="buton button2" name="TM_KOUTU_STATUS" value="0">詳細を見る</button>
+                    </td>
+                </tr>
+                <tr>
+
+                    <td rowspan="2" class="td">勤務表</td>
+                    <td style="text-align:right">提出人数:</td>
+                    <td style="text-align:right" th:text="${map1['tmKinmuStatusCommit']}"></td>
+                    <td>
+                        <button type="button" class="buton button2" name="TM_KINMU_STATUS" value="1">詳細を見る</button>
+                    </td>
+                </tr>
+                <tr>
+
+                    <td style="text-align:right">未提出人数:</td>
+                    <td style="text-align:right" th:text="${map1['tmKinmuStatus']}"></td>
+                    <td>
+                        <button type="button" class="buton button2" name="TM_KINMU_STATUS" value="0">詳細を見る</button>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="td">立替金明細書</td>
+
+                    <td style="text-align:right">提出人数:</td>
+                    <td style="text-align:right" th:text="${map1['tmTatekaeStatusCommit']}"></td>
+                    <td>
+                        <button type="button" class="buton button2" name="TM_TATEKAE_STATUS" value="1">詳細を見る</button>
+                    </td>
+                </tr>
+            </table>
+
+            <div>
+            </div>
+        </div>
+    </form>
+    <form method="post">
+        <div class ="subButton">
+            <button class="sub" type ="submit" onclick="javascript:this.form.action='/others'">他の画面へ</button>
+            <br/>
+            <button class="sub" type ="submit" onclick="javascript:this.form.action='/listAll'">全部を見る</button>
+        </div>
+    </form>
+</div>
+</div>
+</body>
+</html>

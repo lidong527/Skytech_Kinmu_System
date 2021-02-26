@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta content="" name="description" />
+    <meta content="webthemez" name="author" />
+    <link href="/css/bootstrap.css" rel="stylesheet" />
+    <!-- FontAwesome Styles-->
+    <link href="/css/font-awesome.css" rel="stylesheet" />
+    <!-- Custom Styles-->
+    <link href="/css/custom-styles.css" rel="stylesheet" />
+    <!-- Google Fonts-->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>社員入職管理</title>
+    <style type="text/css">
+        #grad {
+            height: 500px;
+            background-color: blue;
+            background-image: linear-gradient(to bottom, #87CEFA , white);
+        }
+        .year{
+            height: 100px;
+            font-size: 30px;
+            text-align:center;
+            background-color: #87CEFA;
+
+        }
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            // $("#response").html("Response Values");
+
+            $("#sub").click(function () {
+                // var url = $("#url_post").val();
+
+                var addStaffForms = [
+                    {
+                        staffBg: $("#No1").val(),
+                        email: $("#Email1").val(),
+                        permission: $("#Permission1").val(),
+                        type: $("#type1").val(),
+                        contractType: $("#contractType1").val()
+                    },
+                    {
+                        staffBg: $("#No2").val(),
+                        email: $("#Email2").val(),
+                        permission: $("#Permission2").val(),
+                        type: $("#type2").val(),
+                        contractType: $("#contractType2").val()
+                    },
+                    {
+                        staffBg: $("#No3").val(),
+                        email: $("#Email3").val(),
+                        permission: $("#Permission3").val(),
+                        type: $("#type3").val(),
+                        contractType: $("#contractType3").val()
+                    },
+                    {
+                        staffBg: $("#No4").val(),
+                        email: $("#Email4").val(),
+                        permission: $("#Permission4").val(),
+                        type: $("#type4").val(),
+                        contractType: $("#contractType4").val()
+                    },
+                    {
+                        staffBg: $("#No5").val(),
+                        email: $("#Email5").val(),
+                        permission: $("#Permission5").val(),
+                        type: $("#type5").val(),
+                        contractType: $("#contractType5").val()
+                    },
+                    {
+                        staffBg: $("#No6").val(),
+                        email: $("#Email6").val(),
+                        permission: $("#Permission6").val(),
+                        type: $("#type6").val(),
+                        contractType: $("#contractType6").val()
+                    },
+                    {
+                        staffBg: $("#No7").val(),
+                        email: $("#Email7").val(),
+                        permission: $("#Permission7").val(),
+                        type: $("#type7").val(),
+                        contractType: $("#contractType7").val()
+                    },
+                    {
+                        staffBg: $("#No8").val(),
+                        email: $("#Email8").val(),
+                        permission: $("#Permission8").val(),
+                        type: $("#type8").val(),
+                        contractType: $("#contractType8").val()
+                    },
+                    {
+                        staffBg: $("#No9").val(),
+                        email: $("#Email9").val(),
+                        permission: $("#Permission9").val(),
+                        type: $("#type9").val(),
+                        contractType: $("#contractType9").val()
+                    },
+                    {
+                        staffBg: $("#No10").val(),
+                        email: $("#Email10").val(),
+                        permission: $("#Permission10").val(),
+                        type: $("#type10").val(),
+                        contractType: $("#contractType10").val()
+                    },
+                    {
+                        staffBg: $("#No11").val(),
+                        email: $("#Email11").val(),
+                        permission: $("#Permission11").val(),
+                        type: $("#type11").val(),
+                        contractType: $("#contractType11").val()
+                    },
+                    {
+                        staffBg: $("#No12").val(),
+                        email: $("#Email12").val(),
+                        permission: $("#Permission12").val(),
+                        type: $("#type12").val(),
+                        contractType: $("#contractType12").val()
+                    }
+                ];
+
+                //alert(JSON.stringify(addStaffForms));
+
+                $.ajax({
+                	headers: {"X-CSRF-TOKEN": $("meta[name='_csrf']").attr("content")},
+                    type: 'post',
+                    url: '/staffCommitCheck',
+                    data: JSON.stringify(addStaffForms),
+                    contentType: 'application/JSON',
+                    dataType: 'text',
+                    scriptCharset: 'utf-8',
+                    async: false,
+                    success: function (messaage) {
+
+                        // Success
+                        // alert("success");
+                        alert(JSON.stringify(messaage));
+                        //window.location.href ='../addStaff';
+                        window.location.reload(true);
+                        //document.location.href = "https://www.ipentec.com";
+                        return false;
+                    },
+                    error: function (messaage) {
+
+                        // Error
+                        alert("error");
+                        alert(JSON.stringify(messaage));
+                       // $("#response").html(JSON.stringify(data));
+                        return false;
+                    }
+                });
+
+            })
+        })
+    </script>
+    <th:block th:replace="common/link::common_header" />
+    <th:block th:replace="common/link::common_js" />
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+
+<!--<nav class="navbar navbar-default top-navbar" role="navigation">-->
+<!--    <div class="navbar-header">-->
+<!--        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">-->
+<!--            <span class="sr-only">Toggle navigation</span>-->
+<!--            <span class="icon-bar"></span>-->
+<!--            <span class="icon-bar"></span>-->
+<!--            <span class="icon-bar"></span>-->
+<!--        </button>-->
+<!--        <p class="navbar-brand"><strong>メニュー</strong></p>-->
+<!--        <div id="sideNav" href="">-->
+<!--            <i class="fa fa-bars icon"></i>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</nav>-->
+<!--&lt;!&ndash;/. NAV TOP  &ndash;&gt;-->
+<!--<nav class="navbar-default navbar-side" role="navigation">-->
+<!--    <div class="sidebar-collapse">-->
+<!--        <ul class="nav" id="main-menu">-->
+<!--            <li>-->
+<!--                <a href="/staff"><i class="fa fa-sitemap"></i> 詳細状況画面</a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                <a href="/koutuQueryList"><i class="fa fa-sitemap"></i> 社員交通費チェック</a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                <a href="/kinmuQueryList"><i class="fa fa-sitemap"></i> 社員勤務表チェック</a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                <a href="/tateQueryList"><i class="fa fa-sitemap"></i> 社員立替金チェック</a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                <a href="/addStaff"><i class="fa fa-sitemap"></i> 社員入職処理</a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                <a href="empty.html"><i class="fa fa-sitemap"></i> 社員退職処理</a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                <a href="/queryAllListBy"><i class="fa fa-sitemap"></i> 社員基本情報照会</a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                <a href="/listAll"><i class="fa fa-sitemap"></i> 人事確認画面</a>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--    </div>-->
+<!--</nav>-->
+<div  id="wrapper">
+    <div th:replace="/common/menu :: menuInfo" ></div>
+<!--    <div id="grad">-->
+<!--    <div>&nbsp;-->
+<!--      <h2 align="center">社員入職管理</h2>-->
+<!--    </div>&nbsp;-->
+<div class="content-wrapper" >
+    <section class="content-header">
+        <h1>社員入職管理</h1>
+    </section>
+    <div><span th:text="${msg}"></span></div>
+    <section class="content">
+        <div class="box" align="center">
+            <table cellspacing="0" height="50%" width="50%" boder="1">
+                <thead>
+                <tr>
+                    <th>社員番号</th>
+                    <th>メールアドレス</th>
+                    <th>権限</th>
+                    <th>業務タイプ</th>
+                    <th>契約種類</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><input type="text" id="No1" name="staffBg" min="0" maxlength="10"/></td>
+                    <td><input type="email" id="Email1" class="email" name="mailAddress"></td>
+                    <td width="70px" class="td">
+                        <select name="permission" class="long" id="Permission1">
+                            <option selected disabled>選択してください</option>
+                            <option value="0">組員</option>
+                            <option value="1">組長</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="type" class="long" id="type1">
+                            <option selected disabled>選択してください</option>
+                            <option value="JAVA">JAVA</option>
+                            <option value="SAP">SAP</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="contractType" class="long" id="contractType1">
+                            <option selected disabled>選択してください</option>
+                            <option value="1">正社員</option>
+                            <option value="2">契約社員</option>
+                            <option value="3">個人事業主</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="No2" name="staffBg" min="0" maxlength="10"/></td>
+                    <td><input type="email" id="Email2" class="email" name="mailAddress"/></td>
+                    <td width="70px" class="td">
+                        <select name="permission" class="long" id="Permission2">
+                            <option selected disabled>選択してください</option>
+                            <option value="0">組員</option>
+                            <option value="1">組長</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="type" class="long" id="type2">
+                            <option selected disabled>選択してください</option>
+                            <option value="JAVA">JAVA</option>
+                            <option value="SAP">SAP</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="contractType" class="long" id="contractType2">
+                            <option selected disabled>選択してください</option>
+                            <option value="1">正社員</option>
+                            <option value="2">契約社員</option>
+                            <option value="3">個人事業主</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="No3" name="staffBg" min="0" maxlength="10"/></td>
+                    <td><input type="email" id="Email3" class="email" name="mailAddress"/></td>
+                    <td width="70px" class="td">
+                        <select name="permission" class="long" id="Permission3">
+                            <option selected disabled>選択してください</option>
+                            <option value="0">組員</option>
+                            <option value="1">組長</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="type" class="long" id="type3">
+                            <option selected disabled>選択してください</option>
+                            <option value="JAVA">JAVA</option>
+                            <option value="SAP">SAP</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="contractType" class="long" id="contractType3">
+                            <option selected disabled>選択してください</option>
+                            <option value="1">正社員</option>
+                            <option value="2">契約社員</option>
+                            <option value="3">個人事業主</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="No4" name="staffBg" min="0" maxlength="10"/></td>
+                    <td><input type="email" id="Email4" class="email" name="mailAddress"/></td>
+                    <td width="70px" class="td">
+                        <select name="permission" class="long" id="Permission4">
+                            <option selected disabled>選択してください</option>
+                            <option value="0">組員</option>
+                            <option value="1">組長</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="type" class="long" id="type4">
+                            <option selected disabled>選択してください</option>
+                            <option value="JAVA">JAVA</option>
+                            <option value="SAP">SAP</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="contractType" class="long" id="contractType4">
+                            <option selected disabled>選択してください</option>
+                            <option value="1">正社員</option>
+                            <option value="2">契約社員</option>
+                            <option value="3">個人事業主</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="No5" name="staffBg" min="0" maxlength="10"/></td>
+                    <td><input type="email" id="Email5" class="email" name="mailAddress"/></td>
+                    <td width="70px" class="td">
+                        <select name="permission" class="long" id="Permission5">
+                            <option selected disabled>選択してください</option>
+                            <option value="0">組員</option>
+                            <option value="1">組長</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="type" class="long" id="type5">
+                            <option selected disabled>選択してください</option>
+                            <option value="JAVA">JAVA</option>
+                            <option value="SAP">SAP</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="contractType" class="long" id="contractType5">
+                            <option selected disabled>選択してください</option>
+                            <option value="1">正社員</option>
+                            <option value="2">契約社員</option>
+                            <option value="3">個人事業主</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="No6" name="staffBg" min="0" maxlength="10"/></td>
+                    <td><input type="email" id="Email6" class="email" name="mailAddress"/></td>
+                    <td width="70px" class="td">
+                        <select name="permission" class="long" id="Permission6">
+                            <option selected disabled>選択してください</option>
+                            <option value="0">組員</option>
+                            <option value="1">組長</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="type" class="long" id="type6">
+                            <option selected disabled>選択してください</option>
+                            <option value="JAVA">JAVA</option>
+                            <option value="SAP">SAP</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="contractType" class="long" id="contractType6">
+                            <option selected disabled>選択してください</option>
+                            <option value="1">正社員</option>
+                            <option value="2">契約社員</option>
+                            <option value="3">個人事業主</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="No7" name="staffBg" min="0" maxlength="10"/></td>
+                    <td><input type="email" id="Email7" class="email" name="mailAddress"/></td>
+                    <td width="70px" class="td">
+                        <select name="permission" class="long" id="Permission7">
+                            <option selected disabled>選択してください</option>
+                            <option value="0">組員</option>
+                            <option value="1">組長</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="type" class="long" id="type7">
+                            <option selected disabled>選択してください</option>
+                            <option value="JAVA">JAVA</option>
+                            <option value="SAP">SAP</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="contractType" class="long" id="contractType7">
+                            <option selected disabled>選択してください</option>
+                            <option value="1">正社員</option>
+                            <option value="2">契約社員</option>
+                            <option value="3">個人事業主</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="No8" name="staffBg" min="0" maxlength="10"/></td>
+                    <td><input type="email" id="Email8" class="email" name="mailAddress"/></td>
+                    <td width="70px" class="td">
+                        <select name="permission" class="long" id="Permission8">
+                            <option selected disabled>選択してください</option>
+                            <option value="0">組員</option>
+                            <option value="1">組長</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="type" class="long" id="type8">
+                            <option selected disabled>選択してください</option>
+                            <option value="JAVA">JAVA</option>
+                            <option value="SAP">SAP</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="contractType" class="long" id="contractType8">
+                            <option selected disabled>選択してください</option>
+                            <option value="1">正社員</option>
+                            <option value="2">契約社員</option>
+                            <option value="3">個人事業主</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="No9" name="staffBg" min="0" maxlength="10"/></td>
+                    <td><input type="email" id="Email9" class="email" name="mailAddress"/></td>
+                    <td width="70px" class="td">
+                        <select name="permission" class="long" id="Permission9">
+                            <option selected disabled>選択してください</option>
+                            <option value="0">組員</option>
+                            <option value="1">組長</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="type" class="long" id="type9">
+                            <option selected disabled>選択してください</option>
+                            <option value="JAVA">JAVA</option>
+                            <option value="SAP">SAP</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="contractType" class="long" id="contractType9">
+                            <option selected disabled>選択してください</option>
+                            <option value="1">正社員</option>
+                            <option value="2">契約社員</option>
+                            <option value="3">個人事業主</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="No10" name="staffBg" min="0" maxlength="10"/></td>
+                    <td><input type="email" id="Email10" class="email" name="mailAddress"/></td>
+                    <td width="70px" class="td">
+                        <select name="permission" class="long" id="Permission10">
+                            <option selected disabled>選択してください</option>
+                            <option value="0">組員</option>
+                            <option value="1">組長</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="type" class="long" id="type10">
+                            <option selected disabled>選択してください</option>
+                            <option value="JAVA">JAVA</option>
+                            <option value="SAP">SAP</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="contractType" class="long" id="contractType10">
+                            <option selected disabled>選択してください</option>
+                            <option value="1">正社員</option>
+                            <option value="2">契約社員</option>
+                            <option value="3">個人事業主</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="No11" name="staffBg" min="0" maxlength="10"/></td>
+                    <td><input type="email" id="Email11" class="email" name="mailAddress"/></td>
+                    <td width="70px" class="td">
+                        <select name="permission" class="long" id="Permission11">
+                            <option selected disabled>選択してください</option>
+                            <option value="0">組員</option>
+                            <option value="1">組長</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="type" class="long" id="type11">
+                            <option selected disabled>選択してください</option>
+                            <option value="JAVA">JAVA</option>
+                            <option value="SAP">SAP</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="contractType" class="long" id="contractType11">
+                            <option selected disabled>選択してください</option>
+                            <option value="1">正社員</option>
+                            <option value="2">契約社員</option>
+                            <option value="3">個人事業主</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="No12" name="staffBg" min="0" maxlength="10"/></td>
+                    <td><input type="email" id="Email12" class="email" name="mailAddress"/></td>
+                    <td width="70px" class="td">
+                        <select name="permission" class="long" id="Permission12">
+                            <option selected disabled>選択してください</option>
+                            <option value="0">組員</option>
+                            <option value="1">組長</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="type" class="long" id="type12">
+                            <option selected disabled>選択してください</option>
+                            <option value="JAVA">JAVA</option>
+                            <option value="SAP">SAP</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="contractType" class="long" id="contractType12">
+                            <option selected disabled>選択してください</option>
+                            <option value="1">正社員</option>
+                            <option value="2">契約社員</option>
+                            <option value="3">個人事業主</option>
+                        </select>
+                    </td>
+                </tr>
+                </tbody>
+            </table>&nbsp;&nbsp;&nbsp;
+            <form>
+                <div align="center">
+                    <button id="sub" class="button button2">一括追加</button>
+                    <button class="button button2" type ="submit" onclick="javascript:this.form.action='/others'">戻る</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+</div>
+</div>
+</div>
+</body>
+</html>

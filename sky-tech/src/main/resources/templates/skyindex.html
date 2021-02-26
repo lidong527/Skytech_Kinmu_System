@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/login.css" th:href="@{/css/login.css}"/>
+
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        function blurCode(id,idErr,errCode) {
+            console.log($("#msg").text().length);
+            if ($("#msg").text().length == 0){
+                $(id).blur(function () {
+
+                    var loginCode = $(id).val();
+                    if ($.trim(loginCode).length <= 0) {
+                        $(idErr).text(errCode);
+
+                        console.log($(id));
+
+                        return;
+                    }
+                    else {
+                        $(idErr).text("");
+                    }
+                });
+
+            }
+
+        }
+        $(function () {
+            blurCode('#email-input', '#email-msg', 'メールアドレスを入れてください')
+            blurCode('#password-input', '#password-msg', 'パスワードを入れてください');
+        })
+    </script>
+    <style>
+        p{
+            color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+<div class="main">
+    <div class="title">
+        <span>スカイテック</span>
+    </div>
+
+    <div class="title-msg">
+<!--        <p th:value="*{msg}" id="title-msg" style="margin-top: 16px" ></p>-->
+    </div>
+<!--    <input type="text" th:value="*{msg}">-->
+    <span id="msg" th:text="${msg}" style="color: red"></span>
+<!--    <input type="text" th:value="*{msg}" style= "background-color:transparent;border:0;" name="t2" value=$content1 />-->
+
+    <form class="loginform" method="post" th:object="${account}">
+        <!--输入框-->
+        <div class="input-content">
+            <!--autoFocus-->
+<!--            <p id="email-msg"></p>-->
+            <p id="email-msg"></p>
+            <div>
+                <input id="email-input" type="email" autocomplete="off" th:field="*{userMail}"
+                       placeholder="example@sky-tech.co.jp" name="userEmail" value=""/>
+            </div>
+            <p id="password-msg" style="margin-top: 16px"></p>
+            <div >
+                <input id="password-input" type="password" th:field="*{password}"
+                       autocomplete="off" placeholder="パスワード" name="password" maxlength="32" value=""/>
+            </div>
+
+        </div>
+
+        <!--登入按钮-->
+        <div style="text-align: center">
+            <button type="submit" class="enter-btn" id="submitBtn" onclick="javascript:this.form.action='/skylogin'">ログイン</button>
+        </div>
+
+        <div class="foor">
+            <div class="left"><span >パスワードを忘れた場合</span></div>
+
+        </div>
+    </form>
+</div>
+</body>
+</html>

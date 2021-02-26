@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>研修一覧</title>
+</head>
+<body>
+<input type=text style="border: 1px dashed #F79646;width:600px;">
+<form>
+    <button>New</button>
+    <br></br>
+    <input type="text" style="border:1px solid #F79646;background-color:#F79646;" name="L_開始日" value=開始日 readonly >
+    <input type="text" style="border:1px solid #F79646;" name="F_開始日_Start">
+    <img src="pic.png">
+    ~
+    <input type="text" style="border:1px solid #F79646;" name="F_開始日_End">
+    <img src="pic.png">
+</form>
+<br></br>
+
+<form>
+
+    <input type="text" style="border:1px solid #F79646;background-color:#F79646;overflow:hidden;" name="L_ステータス" value=ステータス readonly >
+    <select style="width:154px;border:1px solid #F79646;">
+        <option value="val1"></option>
+    </select>
+    <button >Search</button>
+    <div>
+        <table border="1" borderColor="#F79646" cellspacing="0" width="600" height="200">
+            <thead>
+            <tr>
+                <td bgColor="F79646">研修名</td>
+                <td bgColor="F79646">開始日</td>
+                <td bgColor="F79646">ステータス</td>
+                <td bgColor="F79646">受講者</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><a href=" ">テスト研修1</a></td>
+                <td>2015-10-01</td>
+                <td>Inactive</td>
+                <td><a href="#">List</a></td>
+            </tr>
+            <tr>
+                <td><a href="#">テスト研修1</a></td>
+                <td>2015-10-01</td>
+                <td>Active</td>
+                <td><a href="#">List</a></td>
+            </tr>
+            <tr>
+                <td><a href="#">テスト研修2</a></td>
+                <td>2015-11-01</td>
+                <td>Active</td>
+                <td><a href="#">List</a></td>
+            </tr>
+            <tr>
+                <td><a href="#">テスト研修3</a></td>
+                <td>2015-12-01</td>
+                <td>Active</td>
+                <td><a href="#">List</a></td>
+            </tr>
+            <tr>
+                <td><a href="#">テスト研修4</a></td>
+                <td>2015-12-01</td>
+                <td>Active</td>
+                <td><a href="#">List</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</form>
+</body>
+</html>

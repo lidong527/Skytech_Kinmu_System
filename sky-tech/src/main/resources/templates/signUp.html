@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>社員サインアップ画面</title>
+    <!--    <link rel="stylesheet" href="css/input.css">-->
+    <!--    <link rel="stylesheet" href="css/input.css">-->
+    <link rel="stylesheet" type="text/css" href="css/input.css" th:href="@{/css/input.css}"/>
+    <script type="text/javascript">
+        window.onload = function () {
+            var showinfo = document.getElementById('select');
+            var tr = document.querySelectorAll('.tr');
+            showinfo.addEventListener('change',function () {
+                if (showinfo.value ==2 ){
+                    tr[0].style.visibility = 'visible';
+                    tr[1].style.visibility = 'visible';
+                }else if(showinfo.value ==1 ||showinfo.value ==3) {
+                    tr[0].style.visibility = 'hidden';
+                    tr[1].style.visibility = 'hidden';
+                }else if(showinfo.value == 4){
+                    alert("備考欄に原因を書いてください！" );
+                }
+            })
+        }
+        function goBack() {
+            window.history.back()
+        }
+    </script>
+</head>
+<body>
+<div th:style="'background:url(' +@{/picture/color12.png} + ')'">
+    <div align="center" style="font-family: cursive;">
+        &nbsp;<h2 id="timer">社員情報</h2><br />
+    </div>
+    <div class="grad" align="center">&nbsp;
+        &nbsp
+        <form method="post" th:object="${signUpForm}" >
+            <table align="center" middle="center">
+                <span id="msg" th:text="${msg}" style="color: red"></span>
+                <tr>
+                    <td >社員番号</td>
+                    <td><input type="text" class="long" readonly="readonly" th:name="id" th:value="*{id}" >
+					</td>
+					<td>名前</td>
+					<td><input type="text" class="long"  th:name="name" th:value="*{name}" maxlength="20"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>メール</label>
+                    </td>
+                    <td>
+                        <input type="email" class="long" th:name="mail" th:value="*{mail}" required="required" readonly="readonly">
+                    </td>
+					<td>性別</td>
+					<td colspan="0" style="text-align: left">
+					    <select  th:value="*{sex}" th:name="sex" class="long" required="required">
+					        <option selected disabled>選択してください</option>
+					        <option value="男">男</option>
+					        <option value="女">女</option>
+					    </select>
+					</td>
+				</tr>
+				<tr>
+					<td>パスワード</td>
+					<td><input type="password" class="long" th:name="password" th:value="*{password}" id="password" maxlength="20" minlength="8"></td>
+					<td>パスワード再入力</td>
+					<td><input type="password" class="long" th:name="passwordAgain" th:value="*{passwordAgain}" id="repassword">
+					    <span id="equles"></span></td>
+                </tr>
+				<tr>
+                    <td>状態</td>
+                    <td>
+                        <select name="selectName" class="long" th:name="status"  th:value="*{status}"  id="select">
+                              <option selected disabled>選択してください</option>
+                              <option value="1">待機中</option>
+                              <option value="2">現場中</option>
+                              <option value="3">休暇中</option>
+                              <option value="4">その他</option>
+                        </select>
+                    </td>
+				    <td>業務タイプ</td>
+				    <td colspan="2" style="text-align: left">
+				        <select  th:value="*{itType}" th:name="itType" class="long" required="required">
+				              <option selected disabled>選択してください</option>
+				              <option value="JAVA">JAVA</option>
+				              <option value="SAP">SAP</option>
+				        </select>
+				    </td>
+                </tr>
+				<tr>
+				    <td>備考</td>
+				    <td colspan="3">
+				        <textarea class="long" style="width:720px" th:name="remarks"  th:value="*{remarks}"   placeholder="備考">
+				        </textarea>
+				    </td>
+				</tr>
+				<tr style="visibility: hidden" class="tr">
+				    <td>現場名前</td>
+				    <td><input type="text" class="long" th:name="genbanName" th:value="*{genbanName}" maxlength="100" ></td>
+				    <td>現場アドレス</td>
+				    <td><input type="text" class="long" th:name="genbanAddress" th:value="*{genbanAddress}" maxlength="100" ></td>
+				</tr>
+				<tr style="visibility: hidden" class="tr">
+				    <td>基準時間</td>
+				    <td><input type="text" class="long" th:name="standardTime"  th:value="*{standardTime}"  maxlength="3"></td>
+				    <td>精算時間</td>
+				    <td><input type="text" class="long" th:name="upperTime" th:value="*{upperTime}" maxlength="3"></td>
+				</tr>
+            </table>
+            <table>
+				<tr align="center">
+					 <td colspan="2" style="text-align: center">
+						 <input type="submit" value="提出" class="sub" onclick="javascript:this.form.action='/signUp/insert'">
+						 <input type="button" value="戻る" class="sub" onclick="goBack()">
+					 </td>
+				</tr>
+			</table>
+		</form>
+	   </div>
+     </div>
+   </body>
+</html>
+

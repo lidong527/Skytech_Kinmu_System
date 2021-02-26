@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html  lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta content="" name="description" />
+    <meta content="webthemez" name="author" />
+    <!-- Bootstrap Styles-->
+    <link href="/css/bootstrap.css" rel="stylesheet" />
+    <!-- FontAwesome Styles-->
+    <link href="/css/font-awesome.css" rel="stylesheet" />
+    <!-- Custom Styles-->
+    <link href="/css/custom-styles.css" rel="stylesheet" />
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/plugins/messager/jquery.bootstrap.min.js" th:src="@{/js/plugins/messager/jquery.bootstrap.min.js}"></script>
+
+    <title>業務報告書</title>
+    <script th:inline="javascript">
+        $(function () {
+            // var downLoad=document.getElementById( "downLoad ");
+            var fileName = [[${kinmu.fileName}]];
+            var staffBG = [[${kinmu.staffBg}]];
+            var url = "/downloadFile?downType=DOWN_TYPE_KINMU&staffBG="+staffBG;xiugai
+            if (fileName != null && fileName!=''){
+                //alert("no upload file");
+                $("#downLoad").attr("href",url);
+            }else{
+                $("#downLoad").attr("disabled",true).css("pointer-events","none").css("color","#C0C0C0\t");;
+
+            }
+
+        })
+
+        function check() {
+            if (document.update.company.value == "") {
+                alert("現場名称を入力してください!");
+                document.update.company.focus();
+                return false;
+            } else if (document.update.creatUser.value == "") {
+                alert("作業社名を入力してください!");
+                document.update.creatUser.focus();
+                return false;
+            } else if (document.update.standardtime.value == "") {
+                alert("基準期間を入力してください!");
+                document.update.standardtime.focus();
+                return false;
+            } else if (document.update.starttime.value == null || document.update.starttime.value == "") {
+                alert("業務開始日を入力してください!");
+                document.update.starttime.focus();
+                return false;
+            } else if (document.update.endtime.value == null || document.update.endtime.value == "") {
+                alert("業務終了日を入力してください!");
+                document.update.endtime.focus();
+                return false;
+            } else if (document.update.upperTime.value == "") {
+                alert("精算期間を入力してください!");
+                document.update.upperTime.focus();
+                return false;
+            } else if (document.update.ganbanAddress.value == "") {
+                alert("現場アドレスを入力してください!");
+                document.update.ganbanAddress.focus();
+                return false;
+            } else if (document.update.workTime.value == "") {
+                alert("出勤日数を選択してください!");
+                document.update.workTime.focus();
+                return false;
+            } else if (document.update.upload.value == "") {
+                alert("文件を選択してください!");
+                document.update.upload.focus();
+                return false;
+            }else
+                return true;
+        }
+        function goBack() {
+            window.history.back()
+        }
+        //ajax读取Excel数据
+        //20201119 liuyang
+        $(document).ready(function(){
+            $("#upload").click(function () {
+                var file = new FormData($("#form_table")[0]);
+                $.ajax({
+                    type:"POST",
+                    url:"/readExcelKinmu",
+                    data:file,
+                    async:false,
+                    cache:false,
+                    contentType:false,
+                    processData:false,
+                    dataType:'json',
+                    success: function(data){
+                        //读取成功后修改数据
+                        $("#company").val(data.company);
+                        $("#worktime").val(data.workTime);
+                        $("#msgErro").text("情報が読み込まれました");
+                    },
+                    error:function (status, e){
+                        $("#msgErro").text("エラーが発生しました。もう一度お試して下さい！");
+                    }
+                })
+            })
+        })
+        //获取这个月的第一天
+        function MonthFirst(){
+            var time=new Date();
+            var year=time.getFullYear();
+            var month=time.getMonth()+1;
+            if(month<10){
+                month="0"+month;
+            }
+            var v= year +"年"+ month+"月";
+            return v + "業務報告書";
+        }
+
+        window.onload = function () {
+            var timer = document.getElementById("timer");
+            timer.innerHTML = MonthFirst();
+        }
+
+    </script>
+
+    <style type="text/css">
+        #grad {
+            height: 700px;
+            width: 100%;
+            background-image: linear-gradient(to bottom, thistle , black);
+        }
+        .year{
+            font-size: 30px;
+            text-align:center;
+            background-color: thistle;
+            -webkit-text-stroke: 1px thistle ;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav li.selected{
+            animation: tada 1s .2s ease both;
+            -moz-animation: tada 1s .2s ease both;
+            background-color: thistle;
+            color: #97a0b3;
+            font-size: 20px;
+        }
+
+
+        @keyframes tada{
+            0%{-webkit-transform:scale(1);}
+
+            10%, 20%{-webkit-transform:scale(0.9) rotate(-3deg);}
+
+            30%, 50%, 70%, 90%{-webkit-transform:scale(1.1) rotate(3deg);}
+
+            40%, 60%, 80%{-webkit-transform:scale(1.1) rotate(-3deg);}
+
+            100%{-webkit-transform:scale(1) rotate(0);}}
+    </style>
+    <th:block th:replace="common/link::common_header" />
+    <th:block th:replace="common/link::common_js" />
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<!--<nav class="navbar navbar-default top-navbar" role="navigation">-->
+<!--    <div class="navbar-header">-->
+<!--        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">-->
+<!--            <span class="sr-only">Toggle navigation</span>-->
+<!--            <span class="icon-bar"></span>-->
+<!--            <span class="icon-bar"></span>-->
+<!--            <span class="icon-bar"></span>-->
+<!--        </button>-->
+<!--        <p class="navbar-brand" ><strong>メニュー</strong></p>-->
+<!--        <div id="sideNav" href="">-->
+<!--            <i class="fa fa-bars icon"></i>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</nav>-->
+<!--&lt;!&ndash;/. NAV TOP  &ndash;&gt;-->
+
+<!--<nav class="navbar-default navbar-side" role="navigation">-->
+<!--    <div class="sidebar-collapse">-->
+<!--        <ul class="nav" id="main-menu">-->
+<!--            <li >-->
+<!--                <a href="/kojin"><i class="fa fa-desktop"></i> 個人情報</a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                <a href="/koutu"><i class="fa fa-desktop"></i> 交通費提出</a>-->
+<!--            </li>-->
+<!--            <li class="selected">-->
+
+<!--                <a href="/kinmu"><i class="fa fa-desktop"></i>-->
+<!--                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"-->
+<!--                         width="30" height="30"-->
+<!--                         viewBox="0 0 172 172"><defs><linearGradient x1="110.1875" y1="61.8125" x2="110.1875" y2="78.30569" gradientUnits="userSpaceOnUse" id="color-1_44786_gr1"><stop offset="0" stop-color="#fcf3fd"></stop><stop offset="1" stop-color="#6edafc"></stop></linearGradient><linearGradient x1="86" y1="19.7155" x2="86" y2="153.37294" gradientUnits="userSpaceOnUse" id="color-2_44786_gr2"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="86" y1="19.70744" x2="86" y2="153.37294" gradientUnits="userSpaceOnUse" id="color-3_44786_gr3"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="64.5" y1="19.70744" x2="64.5" y2="153.37294" gradientUnits="userSpaceOnUse" id="color-4_44786_gr4"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="86" y1="19.70744" x2="86" y2="153.37294" gradientUnits="userSpaceOnUse" id="color-5_44786_gr5"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="107.5" y1="19.70744" x2="107.5" y2="153.37294" gradientUnits="userSpaceOnUse" id="color-6_44786_gr6"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="61.8125" y1="19.70744" x2="61.8125" y2="153.37294" gradientUnits="userSpaceOnUse" id="color-7_44786_gr7"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="61.8125" y1="19.70744" x2="61.8125" y2="153.37294" gradientUnits="userSpaceOnUse" id="color-8_44786_gr8"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="59.125" y1="19.70744" x2="59.125" y2="153.37294" gradientUnits="userSpaceOnUse" id="color-9_44786_gr9"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="56.4375" y1="19.70744" x2="56.4375" y2="153.37294" gradientUnits="userSpaceOnUse" id="color-10_44786_gr10"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="110.1875" y1="19.70744" x2="110.1875" y2="153.37294" gradientUnits="userSpaceOnUse" id="color-11_44786_gr11"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="123.625" y1="19.70744" x2="123.625" y2="153.37294" gradientUnits="userSpaceOnUse" id="color-12_44786_gr12"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="48.375" y1="19.70744" x2="48.375" y2="153.37294" gradientUnits="userSpaceOnUse" id="color-13_44786_gr13"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient><linearGradient x1="106.15625" y1="19.70744" x2="106.15625" y2="153.37294" gradientUnits="userSpaceOnUse" id="color-14_44786_gr14"><stop offset="0" stop-color="#e090f0"></stop><stop offset="1" stop-color="#05bdf5"></stop></linearGradient></defs><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-size="none"style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g><path d="M129,75.25c0,1.4835 -1.204,2.6875 -2.6875,2.6875h-32.25c-1.4835,0 -2.6875,-1.204 -2.6875,-2.6875v-10.75c0,-1.4835 1.204,-2.6875 2.6875,-2.6875h32.25c1.4835,0 2.6875,1.204 2.6875,2.6875z" fill="url(#color-1_44786_gr1)"></path><path d="M147.8125,112.875h-2.6875v-83.87419c0,-2.279 -1.38944,-4.257 -3.53406,-5.03638c-2.15537,-0.78744 -4.49619,-0.15856 -5.97162,1.59637l-4.54994,5.43144c-0.70144,0.8385 -1.59637,0.96213 -2.06938,0.96213c-0.473,0 -1.36794,-0.12631 -2.06938,-0.96213l-5.54431,-6.61125c-1.44319,-1.72806 -3.56363,-2.7735 -5.81844,-2.87831c-2.279,-0.11019 -4.46662,0.74981 -6.06031,2.34081l-7.8045,7.75881c-0.54019,0.5375 -1.19325,0.77937 -2.02906,0.78206c-0.76325,-0.03762 -1.45394,-0.37625 -1.94306,-0.95944l-5.54431,-6.61394c-1.53725,-1.83556 -3.78937,-2.88638 -6.18662,-2.88638c-2.39725,0 -4.64938,1.0535 -6.18931,2.88369l-5.54431,6.61662c-0.48912,0.58319 -1.17712,0.92181 -1.94306,0.95675c-0.83312,0.00269 -1.48887,-0.24725 -2.02906,-0.78206l-7.8045,-7.75881c-1.59638,-1.591 -3.77325,-2.45637 -6.063,-2.34081c-2.25481,0.10481 -4.37525,1.15294 -5.81844,2.87562l-5.54431,6.61394c-0.70144,0.8385 -1.59638,0.96213 -2.06938,0.96213c-0.473,0 -1.36794,-0.12631 -2.06938,-0.96213l-4.54456,-5.43144c-1.47544,-1.75494 -3.81894,-2.39188 -5.97162,-1.59637c-2.14463,0.78206 -3.53406,2.76006 -3.53406,5.03906v83.87419h-2.6875c-4.44513,0 -8.0625,3.62812 -8.0625,8.08131v10.75c0,4.43975 3.61737,8.04369 8.0625,8.04369h123.625c4.44512,0 8.0625,-3.60394 8.0625,-8.04369v-10.75c0,-4.45319 -3.61737,-8.08131 -8.0625,-8.08131zM36.81069,34.44569c1.53994,1.83288 3.79206,2.88369 6.18931,2.88369c2.39725,0 4.64937,-1.0535 6.18931,-2.88369l5.54431,-6.61662c0.48913,-0.58319 1.17712,-0.92181 1.94306,-0.95675c0.78744,-0.00269 1.48619,0.24456 2.02906,0.78206l7.8045,7.75881c1.59637,1.58831 3.75175,2.40531 6.063,2.34081c2.25481,-0.10481 4.37525,-1.15294 5.81844,-2.87562l5.54431,-6.61394c0.70144,-0.8385 1.59637,-0.96213 2.06937,-0.96213c0.473,0 1.36794,0.12631 2.06938,0.96213l5.54431,6.61125c1.44319,1.72806 3.56363,2.7735 5.81844,2.87831c2.27362,0.06719 4.46931,-0.7525 6.063,-2.34081l7.8045,-7.75881c0.54287,-0.5375 1.24431,-0.74175 2.02906,-0.78206c0.76325,0.03762 1.45394,0.37625 1.94306,0.95944l5.54431,6.61394c1.52919,1.83288 3.78131,2.88369 6.17856,2.88369c2.39725,0 4.64937,-1.0535 6.18931,-2.88369l4.56069,-5.44487v105.37419h-107.5l0.01075,-105.36613zM21.5,131.70631v-10.75c0,-1.48619 1.204,-2.70631 2.6875,-2.70631h2.6875v16.125h-2.6875c-1.4835,0 -2.6875,-1.19325 -2.6875,-2.66869zM150.5,131.70631c0,1.47544 -1.204,2.66869 -2.6875,2.66869h-2.6875v-16.125h2.6875c1.4835,0 2.6875,1.22012 2.6875,2.70631z" fill="url(#color-2_44786_gr2)"></path><path d="M26.875,145.125h118.25v5.375h-118.25z" fill="url(#color-3_44786_gr3)"></path><path d="M59.125,112.875h10.75v5.375h-10.75z" fill="url(#color-4_44786_gr4)"></path><path d="M75.25,112.875h21.5v5.375h-21.5z" fill="url(#color-5_44786_gr5)"></path><path d="M102.125,112.875h10.75v5.375h-10.75z" fill="url(#color-6_44786_gr6)"></path><path d="M43,61.8125h37.625v5.375h-37.625z" fill="url(#color-7_44786_gr7)"></path><path d="M43,72.5625h37.625v5.375h-37.625z" fill="url(#color-8_44786_gr8)"></path><path d="M43,83.3125h32.25v5.375h-32.25z" fill="url(#color-9_44786_gr9)"></path><path d="M43,94.0625h26.875v5.375h-26.875z" fill="url(#color-10_44786_gr10)"></path><path d="M91.375,83.3125h37.625v5.375h-37.625z" fill="url(#color-11_44786_gr11)"></path><path d="M118.25,112.875h10.75v5.375h-10.75z" fill="url(#color-12_44786_gr12)"></path><path d="M43,112.875h10.75v5.375h-10.75z" fill="url(#color-13_44786_gr13)"></path><path d="M91.375,94.0625h29.5625v5.375h-29.5625z" fill="url(#color-14_44786_gr14)"></path></g></g></svg>-->
+
+<!--                    勤務表提出</a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                <a href="/tatekae"><i class="fa fa-desktop"></i> 立替金提出</a>-->
+<!--            </li>-->
+
+<!--            <li>-->
+<!--                <a href="/koutuQueryListByBg"><i class="fa fa-sitemap"></i> 交通費提出情報照会</a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                <a href="/kinmuQueryListByBg"><i class="fa fa-sitemap"></i> 勤務表提出情報照会</a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                <a href="/tateQueryListByBg"><i class="fa fa-sitemap"></i> 立替金提出情報照会</a>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--    </div>-->
+<!--</nav>-->
+<!-- /. NAV SIDE  -->
+<div id="wrapper">
+    <div th:replace="/common/staffMenu :: menuInfo" ></div>
+
+    <div class="content-wrapper" align="center" >
+        <div class="panel-heading" style="font-family: cursive;">
+            &nbsp;<h2 id="timer">業務報告書</h2><br>
+        </div>
+
+        <div id="grad" align="center">&nbsp;
+            &nbsp
+            <table cellspacing="0" width="40%" style="border-collapse:separate; border-spacing:0px 10px;">
+                <th>
+                    下記の期間の業務状況について、御報告いたします。
+                </th>
+            </table>
+            <form id="form_table" name="update" th:object="${kinmu}" method="post" enctype="multipart/form-data">
+                <table cellspacing="0" width="40%" style="border-collapse:separate; border-spacing:0px 10px;">
+                    <tr >
+                        <input  type="hidden" th:name="USED_TIME" th:value="*{USED_TIME}" >
+                        <input  type="hidden" th:name="upTime" th:value="*{upTime}" >
+                        <td class="td" >現場名称</td>
+                        <td colspan="3"><input style="width: 250px" type="text" th:value="*{company}"  th:name="company" id="company" required="required"/></td>
+                    </tr>
+                    <tr>
+                        <td class="td" >作業者名</td>
+                        <td colspan="3"><input style="width: 250px"  type="text" th:value="*{staffName}" th:name="staffName" required="required"/></td>
+                    </tr>
+                    <tr>
+                        <td class="td">基準期間</td>
+                        <td colspan="3"><input type="text" th:value="*{standardtime}" style="width: 30%"  th:name="standardtime" required="required" />
+                            ~
+                            <input type="text" th:value="*{upperTime}"  style="width: 30%"   th:name="upperTime" required="required" />
+                        </td>
+                    </tr>
+                    <!--<tr>
+                        <td class="td">作業開始日</td>
+
+                        <td class="td"><input style="width: 250px" th:value="${#dates.format(kinmu.starttime,'yyyy-MM-dd')}" class="sang_Calender"
+                                              th:name="starttime"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td">作業終了日</td>
+
+                        <td class="td"><input style="width: 250px" th:value="${#dates.format(kinmu.endtime,'yyyy-MM-dd')}" class="sang_Calender"
+                                              th:name="endtime"/>
+                        </td>
+                    </tr>-->
+                    <tr>
+                        <td class="td" >作業開始日</td>
+                        <td colspan="3"><input style="width: 250px" type="text" th:value="${kinmu?.starttime} == null? '' :${#dates.format(kinmu.starttime,'yyyy-MM-dd')}" class="sang_Calender"
+                                               th:name="starttime" required="required"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td">作業終了日</td>
+                        <td class="td"><input style="width: 250px" type="text" th:value="${kinmu?.endtime} == null? '' :${#dates.format(kinmu?.endtime,'yyyy-MM-dd')}" class="sang_Calender"
+                                              th:name="endtime" required="required"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td">稼働時間</td>
+                        <td colspan="3"><input style="width: 250px" type="text" id="worktime"  th:value="*{workTime}" th:name="workTime" required="required"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td" style="width:100px">現場アドレス</td>
+                        <td colspan="3"><input style="width: 250px" type="text"  th:value="*{ganbanAddress}" th:name="ganbanAddress" required="required"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td">備考</td>
+                        <td colspan="3"><input style="width: 250px" type="text"  th:value="*{biko}" th:name="biko" required="required"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left" name="upfile">文件提出</td>
+                        <td align="left">
+                            <input type="file"  id="file" name="fileUpload">
+                            <button id="upload" type="button">upload</button>
+                            <span id="msgErro" style="color: red"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left" name="upfile">文件下载</td>
+                        <td align="left" >
+
+                            <a id="downLoad" >
+                                <span class="glyphicon glyphicon-download-alt"></span> コミットしたファイルをダウンロードします
+                            </a>
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td align="left" name="upfile">模板下载</td>
+                        <td align="left">
+                            <a href="/作業報告書.xlsx" class="btn btn-success">
+                                <span class="glyphicon glyphicon-download-alt"></span>ダウンロード
+                            </a>
+
+                        </td>
+                    </tr>
+
+                </table>
+                <br/>
+                <div align="center">
+                    <button class="btn btn-primary button button2" type="submit" onclick="javascript:this.form.action='/kinmuSubmit'">保存</button>&nbsp;&nbsp;
+                    <button class="btn btn-info button button2" onclick="goBack()">戻る</button>
+                    <br/>
+
+                </div>
+            </form>
+        </div>
+        <script th:src="@{js/datetime.js}" src="/js/datetime.js" type="text/javascript"></script>
+    </div>
+</div>
+</body>
+</html>

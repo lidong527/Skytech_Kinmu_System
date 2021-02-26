@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="common/link::common_header" />
+    <th:block th:replace="common/link::common_js" />
+    <title>詳細状況画面</title>
+    <script th:inline="javascript">
+        $(function () {
+
+            //菜单初始
+            $('.sidebar-menu').tree();
+            //方法二：
+            (function ($) {
+                $.getUrlParam = function (name) {
+                    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                    var r = window.location.search.substr(1).match(reg);
+                    if (r != null) return unescape(r[2]); return null;                 }
+            })(jQuery);
+            var it_type = $.getUrlParam('IT_TYPE');
+            var cuLi;
+            /*         var currentMenu;
+                     switch(contract_type) {
+                         case "0":
+                             cuLi = $('.treeview-menu li[name="staffContractList-A"]')
+                             currentMenu="staffContractList-A";
+
+                             break;
+                         case "1":
+                             cuLi = $('.treeview-menu li[name="staffContractList-B"]');
+                             currentMenu="staffContractList-B";
+                             break;
+                         case "2":
+                             cuLi = $('.treeview-menu li[name="staffContractList-C"]');
+                             currentMenu="staffContractList-C";
+                             break;
+                     }
+                     if (currentMenu !=null){
+                         $("input[name='currentMenu']").val(currentMenu);
+
+                     }*/
+
+            // var currentMenu = [[${currentMenu}]];
+            var current = $("input[name='currentMenu']").val();
+            var currentMenu = current + "-" + it_type;
+
+            //菜单激活
+            cuLi = $('.treeview-menu li[name="'+ currentMenu +'"]');
+            cuLi.addClass("active");
+            cuLi.closest(".treeview").addClass("active")
+            var titleType = [[${IT_TYPE}]];
+            console.log(titleType);
+            if (titleType == "JAVA"){
+                $("#title").text("オープン系").css("color","#2b61ce");
+            }
+            if (titleType == "SAP"){
+                $("#title").text("SAP部").css("color","#2b61ce");
+            }
+            $(".buton").click(function () {
+                var btn = $(this).attr("class").split(' ')[1];
+                console.log(btn);
+                var month;
+                var statusName = $(this).attr("name");
+                if (statusName.indexOf("lm") != -1){
+                    month=0;}else{
+                    month=1;
+                }
+                $("input[name='month']").attr("value",month);
+                var status = $(this).val();
+                // console.lo($("#status"));
+                $("input[name='status']").attr("value",status);
+                $("input[name='statusName']").attr("value",statusName);
+                $("#inputx").attr("name",statusName).attr("value",status)
+                //$("input[name=statusName]").attr("value",status);
+                if (btn == "button3"){
+                    $("input[name='IT_TYPE']").val("SAP")
+                }
+                if (btn == "button2"){
+                    $("input[name='IT_TYPE']").val("JAVA")
+                }
+                $("#searchForm").attr("action","listAll");
+                $("#searchForm").submit();
+
+            })
+        })
+
+    </script>
+    <style type="text/css">
+        table{
+            border-spacing:20px;}
+        td{
+            padding:10px;}
+
+    </style>
+</head>
+<body class="hold-transition skin-blue sidebar-mini" >
+<div id="wrapper">
+    <div th:replace="/common/menu :: menuInfo" ></div>
+    <input type="hidden" name="currentMenu" id="currentMenu" th:value="detailCount">
+    <div class="content-wrapper">
+        <section class="content-header">
+<!--            <h1 id="title"></h1>-->
+        </section>
+        <section class="content">
+            <div class="box">
+                <form  id="searchForm" action="" method="post" name="java">
+                    <div class="leftbox" align="center" id="JAVA">&nbsp;
+                        <input  name="status" type="hidden"/>
+                        <input  name="month" type="hidden"/>
+                        <input name="statusName" type="hidden"/>
+                        <input name="IT_TYPE" type="hidden" value="JAVA"/>
+                        <input id="inputx" name="" type="hidden" value=""/>
+                        <table >
+                            <tr>
+                            <tr align="center" ><label><h2 id="title"></h2></label></tr>
+                            </tr>
+                            <tr>
+                                <td rowspan="2" class="td">交通費</td>
+                                <td style="text-align:right">提出人数:</td>
+                                <td  style="text-align:right" th:text="${map['tmKoutuStatusCommit']}"></td>
+                                <td>
+                                    <button type="button" class="btn btn-default buton button2" name="TM_KOUTU_STATUS" value="1">詳細を見る</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:right"> 未提出人数:</td>
+                                <td  style="text-align:right; color:red" th:text="${map['tmKoutuStatus']}"></td>
+                                <td>
+                                    <button type="button" class="btn btn-default buton button2" name="TM_KOUTU_STATUS" value="0">詳細を見る</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td rowspan="2" class="td">勤務表</td>
+                                <td style="text-align:right">提出人数:</td>
+                                <td style="text-align:right" th:text="${map['tmKinmuStatusCommit']}"></td>
+                                <td>
+                                    <button type="button" class="btn btn-default buton button2" name="TM_KINMU_STATUS" value="1">詳細を見る</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:right">未提出人数:</td>
+                                <td style="text-align:right" th:text="${map['tmKinmuStatus']}"></td>
+                                <td>
+                                    <button type="button" class="btn btn-default buton button2" name="TM_KOUTU_STATUS" value="0">詳細を見る</button>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td class="td">立替金明細書</td>
+
+                                <td style="text-align:right">提出人数:</td>
+                                <td style="text-align:right" th:text="${map['tmTatekaeStatusCommit']}"></td>
+                                <td>
+                                    <button type="button" class="btn btn-default buton button2" name="TM_TATEKAE_STATUS" value="1">詳細を見る</button>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <br/><br/>
+                    </div>
+
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+
+</body>
+</html>
