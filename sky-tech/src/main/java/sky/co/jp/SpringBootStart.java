@@ -23,6 +23,7 @@ import org.springframework.context.annotation.Bean;
                 //セッション生存時間30分
                 Container.setSessionTimeout(30*60);
             }
+            
         };
     }
 }
