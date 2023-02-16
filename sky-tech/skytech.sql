@@ -203,13 +203,13 @@ CREATE TABLE `m_staff`  (
 -- ----------------------------
 -- Records of m_staff
 -- ----------------------------
-INSERT INTO `m_staff` VALUES ('123', 1, 'zsw', '5@5', '女', 1, 1, 160, 200, NULL, 'test', 'JAVA', 1, 1, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', NULL, NULL, '0000-00-00', NULL);
-INSERT INTO `m_staff` VALUES ('20201019', 2, '1111', '2@2', '男', 4, 1, 140, 180, NULL, 'test', NULL, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00', NULL);
-INSERT INTO `m_staff` VALUES ('2016081701', 6, '李東', '1@1.co', '男', 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00', NULL);
-INSERT INTO `m_staff` VALUES ('2020020202', 7, '周テイテイ', '2@2.co', '女', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00', NULL);
-INSERT INTO `m_staff` VALUES ('2018102501', 8, NULL, '3@3.co', '女', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00', NULL);
-INSERT INTO `m_staff` VALUES ('2020020801', 9, '劉洋', '6@6', '男', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00', NULL);
-INSERT INTO `m_staff` VALUES ('102', 12, 'liuy', '00@00', '男', 4, 1, NULL, NULL, NULL, '', '', 0, 1, 0, 0, 0, 0, '', NULL, NULL, '', 0, NULL, NULL, '', '          ', NULL, NULL, '0000-00-00', NULL);
+INSERT INTO `m_staff` VALUES ('123', 1, 'zsw', '5@5', '女', 1, 1, 160, 200, NULL, 'test', 'JAVA', 1, 1, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', NULL, NULL, NULL, NULL);
+INSERT INTO `m_staff` VALUES ('20201019', 2, '1111', '2@2', '男', 4, 1, 140, 180, NULL, 'test', NULL, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, null, NULL);
+INSERT INTO `m_staff` VALUES ('2016081701', 6, '李東', '1@1.co', '男', 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, null, NULL);
+INSERT INTO `m_staff` VALUES ('2020020202', 7, '周テイテイ', '2@2.co', '女', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, null, NULL);
+INSERT INTO `m_staff` VALUES ('2018102501', 8, NULL, '3@3.co', '女', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, null, NULL);
+INSERT INTO `m_staff` VALUES ('2020020801', 9, '劉洋', '6@6', '男', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, null, NULL);
+INSERT INTO `m_staff` VALUES ('102', 12, 'liuy', '00@00', '男', 4, 1, NULL, NULL, NULL, '', '', 0, 1, 0, 0, 0, 0, '', NULL, NULL, '', 0, NULL, NULL, '', '          ', NULL, NULL, null, NULL);
 
 -- ----------------------------
 -- Table structure for m_sys_manager
